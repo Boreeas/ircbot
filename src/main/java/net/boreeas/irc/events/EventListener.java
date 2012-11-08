@@ -27,9 +27,9 @@ public interface EventListener {
     void onChannelModeChange(ChannelModeChangeEvent evt);
 
     void onCommandTriggered(CommandTriggeredEvent evt);
-    void onMuteToggled(MuteToggeledEvent evt);
+    void onToggleMute(ToggleMuteEvent evt);
     void onAccessLevelChange(AccessLevelChangeEvent evt);
-    void onPingReceived(PingReceivedEvent evt);
-    void onConnectionFinished(ConnectionFinishedEvent evt);
+    void onPingReceived(PingEvent evt);
+    void onConnected(ConnectedEvent evt);
     void onWelcomeReceived(WelcomeReceivedEvent evt);
 }
