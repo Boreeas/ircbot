@@ -22,7 +22,7 @@ public interface EventListener {
     void onOtherJoinedChannel(OtherJoinedChannelEvent evt);
     void onOtherLeftChannel(OtherLeftChannelEvent evt);
     void onMessageReceived(MessageReceivedEvent evt);
-    void onNoticeReceived(NoticeReceivedEvent evt);
+    void onNoticeReceived(MessageReceivedEvent evt);
     void onOtherQuitNetwork(OtherQuitNetworkEvent evt);
     void onChannelModeChange(ChannelModeChangeEvent evt);
 
