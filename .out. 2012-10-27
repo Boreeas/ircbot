@@ -1,0 +1,437 @@
+27 Oct 2012 18:32:47,345 [main                ] [DEBUG]: ConfigurationUtils.locate(): base is null, name is bot_esper.plist
+27 Oct 2012 18:32:47,428 [main                ] [DEBUG]: Could not locate file bot_esper.plist at null: no protocol: bot_esper.plist
+27 Oct 2012 18:32:47,536 [main                ] [DEBUG]: Loading configuration from the path bot_esper.plist
+27 Oct 2012 18:32:47,888 [main                ] [INFO ]: Loading core pseudo module
+27 Oct 2012 18:32:47,920 [main                ] [INFO ]: Starting IRCBot[irc.esper.net:6667]
+27 Oct 2012 18:32:48,632 [main                ] [INFO ]: [→] :portlane.esper.net NOTICE * :*** Looking up your hostname...
+27 Oct 2012 18:32:48,708 [main                ] [INFO ]: [→] :portlane.esper.net NOTICE * :*** Checking Ident
+27 Oct 2012 18:32:48,711 [main                ] [INFO ]: [→] :portlane.esper.net NOTICE * :*** No Ident response
+27 Oct 2012 18:32:49,058 [main                ] [INFO ]: [→] :portlane.esper.net NOTICE * :*** Found your hostname
+27 Oct 2012 18:32:49,059 [main                ] [INFO ]: [←] NICK Feeder
+27 Oct 2012 18:32:49,059 [main                ] [INFO ]: [←] USER Feeder * * :Public RSS Feed Bot
+27 Oct 2012 18:32:49,312 [irc.esper.net:6667  ] [INFO ]: [→] PING :FFFFFFFF0DDFE370
+27 Oct 2012 18:32:49,393 [irc.esper.net:6667  ] [INFO ]: [←] PONG :FFFFFFFF0DDFE370
+27 Oct 2012 18:32:52,505 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 001 Feeder :Welcome to the EsperNet Internet Relay Chat Network Feeder
+27 Oct 2012 18:32:52,518 [irc.esper.net:6667  ] [INFO ]: [←] JOIN #arcticraft
+27 Oct 2012 18:32:52,570 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 002 Feeder :Your host is portlane.esper.net[91.217.189.68/6667], running version charybdis-3.3.0
+27 Oct 2012 18:32:52,623 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 003 Feeder :This server was created Mon Aug 13 2012 at 23:21:29 CEST
+27 Oct 2012 18:32:52,676 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 004 Feeder portlane.esper.net charybdis-3.3.0 DQRSZagiloswz CFILPQbcefgijklmnopqrstvz bkloveqjfI
+27 Oct 2012 18:32:52,728 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 005 Feeder CHANTYPES=# EXCEPTS INVEX CHANMODES=eIbq,k,flj,CFPcgimnpstz CHANLIMIT=#:50 PREFIX=(ov)@+ MAXLIST=bqeI:100 MODES=4 NETWORK=EsperNet KNOCK STATUSMSG=@+ CALLERID=g :are supported by this server
+27 Oct 2012 18:32:52,779 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 005 Feeder CASEMAPPING=rfc1459 CHARSET=ascii NICKLEN=30 CHANNELLEN=50 TOPICLEN=390 ETRACE CPRIVMSG CNOTICE DEAF=D MONITOR=100 FNC TARGMAX=NAMES:1,LIST:1,KICK:1,WHOIS:1,PRIVMSG:4,NOTICE:4,ACCEPT:,MONITOR: :are supported by this server
+27 Oct 2012 18:32:52,830 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 005 Feeder EXTBAN=$,acjorsxz WHOX CLIENTVER=3.0 SAFELIST ELIST=CTU :are supported by this server
+27 Oct 2012 18:32:52,881 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 251 Feeder :There are 8 users and 6589 invisible on 9 servers
+27 Oct 2012 18:32:52,932 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 252 Feeder 33 :IRC Operators online
+27 Oct 2012 18:32:52,983 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 253 Feeder 1 :unknown connection(s)
+27 Oct 2012 18:32:53,034 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 254 Feeder 3688 :channels formed
+27 Oct 2012 18:32:53,084 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 255 Feeder :I have 1278 clients and 1 servers
+27 Oct 2012 18:32:53,135 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 265 Feeder 1278 2827 :Current local users 1278, max 2827
+27 Oct 2012 18:32:53,186 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 266 Feeder 6597 7119 :Current global users 6597, max 7119
+27 Oct 2012 18:32:53,237 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 250 Feeder :Highest connection count: 2828 (2827 clients) (231059 connections received)
+27 Oct 2012 18:32:53,288 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 375 Feeder :- portlane.esper.net Message of the Day - 
+27 Oct 2012 18:32:53,339 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-                    __   __                    
+27 Oct 2012 18:32:53,390 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :- .-----.-----.----.|  |_|  |.---.-.-----.-----.
+27 Oct 2012 18:32:53,441 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :- |  _  |  _  |   _||   _|  ||  _  |     |  -__|
+27 Oct 2012 18:32:53,492 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :- |   __|_____|__|  |____|__||___._|__|__|_____|
+27 Oct 2012 18:32:53,546 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :- |__|   Welcome to portlane.esper.net!                                       
+27 Oct 2012 18:32:53,597 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  
+27 Oct 2012 18:32:53,648 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :- Info:
+27 Oct 2012 18:32:53,698 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  Support for IPv4 & IPv6.
+27 Oct 2012 18:32:53,749 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  Server hosted by Portlane (www.portlane.com) and
+27 Oct 2012 18:32:53,800 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  located in Stockholm, Sweden.
+27 Oct 2012 18:32:53,851 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  
+27 Oct 2012 18:32:53,902 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :- Timeline:
+27 Oct 2012 18:32:53,952 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  14/08/2012: We've now linked to EsperNet.
+27 Oct 2012 18:32:54,005 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  
+27 Oct 2012 18:32:54,056 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :- Staff:
+27 Oct 2012 18:32:54,107 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-    suom1: Administrator
+27 Oct 2012 18:32:54,158 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  brynjar: Administrator
+27 Oct 2012 18:32:54,209 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  
+27 Oct 2012 18:32:54,261 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :- Channels:
+27 Oct 2012 18:32:54,312 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  #dragonweyr - Network staff assistance
+27 Oct 2012 18:32:54,363 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  #coders     - Help with programming
+27 Oct 2012 18:33:48,317 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  #lobby      - Chat
+27 Oct 2012 18:33:48,368 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  #help       - General IRC help
+27 Oct 2012 18:33:48,419 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  
+27 Oct 2012 18:33:48,470 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :- Terms of Service:
+27 Oct 2012 18:33:48,520 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  Your use of this network constitutes an agreement to abide by the
+27 Oct 2012 18:33:48,571 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  rules presented in the EsperNet AUP - http://esper.net/charter.php
+27 Oct 2012 18:33:48,622 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  as well as any applicable Swedish and International laws.
+27 Oct 2012 18:33:48,673 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  
+27 Oct 2012 18:33:48,723 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  Further, your use of this network implies consent to a port scan
+27 Oct 2012 18:33:48,774 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  to detect open proxies and otherwise compromised systems.
+27 Oct 2012 18:33:48,825 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  
+27 Oct 2012 18:33:48,875 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  Properly configured bots are permitted, but are required to follow
+27 Oct 2012 18:33:48,926 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  the same rules as users. FServes are strictly prohibited.
+27 Oct 2012 18:33:48,977 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  
+27 Oct 2012 18:33:49,028 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 372 Feeder :-  We reserve the right to remove anyone at any time for any reason.
+27 Oct 2012 18:33:49,079 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 376 Feeder :End of /MOTD command.
+27 Oct 2012 18:33:49,129 [irc.esper.net:6667  ] [INFO ]: [→] :Feeder MODE Feeder :+i
+27 Oct 2012 18:33:49,180 [irc.esper.net:6667  ] [INFO ]: [→] :Feeder!~Feeder@i59F57E5C.versanet.de JOIN #arcticraft
+27 Oct 2012 18:33:49,231 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net MODE #arcticraft +nt
+27 Oct 2012 18:33:49,281 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 353 Feeder = #arcticraft :@Feeder
+27 Oct 2012 18:33:49,332 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 366 Feeder #arcticraft :End of /NAMES list.
+27 Oct 2012 18:33:49,383 [irc.esper.net:6667  ] [INFO ]: [→] :Boreeas!~Boreeas@frozen.boreeas.net PRIVMSG Feeder :!! join #rss
+27 Oct 2012 18:33:49,384 [irc.esper.net:6667  ] [DEBUG]: Received command ! join
+27 Oct 2012 18:33:49,404 [irc.esper.net:6667  ] [INFO ]: [←] JOIN #rss
+27 Oct 2012 18:33:49,505 [irc.esper.net:6667  ] [INFO ]: [→] :Feeder!~Feeder@i59F57E5C.versanet.de JOIN #rss
+27 Oct 2012 18:33:49,606 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 353 Feeder = #rss :Feeder AdBot Boreeas Sanky
+27 Oct 2012 18:33:55,928 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 366 Feeder #rss :End of /NAMES list.
+27 Oct 2012 18:33:55,980 [irc.esper.net:6667  ] [INFO ]: [→] :Boreeas!~Boreeas@frozen.boreeas.net PRIVMSG #rss :!! plugin list available
+27 Oct 2012 18:33:55,981 [irc.esper.net:6667  ] [DEBUG]: Received command ! plugin
+27 Oct 2012 18:33:56,013 [irc.esper.net:6667  ] [INFO ]: [←] NOTICE #rss :Available plugins: RSSBridge-1.0.0.jar
+27 Oct 2012 18:34:06,401 [irc.esper.net:6667  ] [INFO ]: [→] :Boreeas!~Boreeas@frozen.boreeas.net PRIVMSG #rss :!! plugin load RSSBridge-1.0.0.jar
+27 Oct 2012 18:34:06,402 [irc.esper.net:6667  ] [DEBUG]: Received command ! plugin
+27 Oct 2012 18:34:06,403 [irc.esper.net:6667  ] [INFO ]: [←] WHO Boreeas %a
+27 Oct 2012 18:34:06,515 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 354 Feeder Boreeas
+27 Oct 2012 18:34:06,516 [irc.esper.net:6667  ] [DEBUG]: Accountname for Boreeas is Boreeas
+27 Oct 2012 18:34:06,516 [irc.esper.net:6667  ] [DEBUG]: Checking access level for account Boreeas... OWNER
+27 Oct 2012 18:34:06,779 [irc.esper.net:6667  ] [INFO ]: RSSBridge 1.0.0 enabled
+27 Oct 2012 18:34:06,780 [irc.esper.net:6667  ] [INFO ]: [←] NOTICE #rss :Loaded plugin RSSBridge (Version 1.0.0) from file RSSBridge-1.0.0.jar
+27 Oct 2012 18:34:06,831 [irc.esper.net:6667  ] [INFO ]: [→] :portlane.esper.net 315 Feeder Boreeas :End of /WHO list.
+27 Oct 2012 18:35:52,722 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 18:35:52,722 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 18:37:36,767 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 18:37:36,767 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 18:39:20,745 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 18:39:20,746 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 18:41:04,734 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 18:41:04,734 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 18:42:49,029 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 18:42:49,030 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 18:44:34,769 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 18:44:34,769 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 18:46:16,787 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 18:46:16,787 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 18:48:00,757 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 18:48:00,758 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 18:49:44,789 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 18:49:44,790 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 18:51:28,758 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 18:51:28,758 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 18:53:12,775 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 18:53:12,776 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 18:54:56,807 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 18:54:56,807 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 18:56:40,791 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 18:56:40,792 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 18:58:25,071 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 18:58:25,071 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:00:08,798 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:00:08,798 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:01:53,078 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:01:53,078 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:03:36,810 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:03:36,811 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:05:21,106 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:05:21,106 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:07:04,825 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:07:04,826 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:08:49,111 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:08:49,112 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:10:32,793 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:10:32,827 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:12:16,802 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:12:16,802 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:14:00,828 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:14:00,828 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:15:44,807 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:15:44,808 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:17:28,834 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:17:28,835 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:19:12,814 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:19:12,815 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:20:56,848 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:20:56,848 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:22:40,826 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:22:40,827 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:24:24,844 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:24:24,844 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:26:08,858 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:26:08,859 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:27:52,870 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:27:52,871 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:29:36,840 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:29:36,840 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:31:21,171 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:31:21,172 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:33:04,842 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:33:04,843 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:34:48,866 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:34:48,867 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:36:32,844 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:36:32,845 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:38:16,875 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:38:16,876 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:40:00,879 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:40:00,879 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:41:44,891 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:41:44,891 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:43:28,873 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:43:28,874 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:45:12,874 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:45:12,874 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:46:56,885 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:46:56,886 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:48:40,890 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:48:40,891 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:50:24,892 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:50:24,893 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:52:08,944 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:52:08,944 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:53:52,895 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:53:52,895 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:55:36,894 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:55:36,895 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:57:20,893 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:57:20,893 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 19:59:05,195 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 19:59:05,195 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:00:48,939 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:00:48,939 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:02:32,942 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:02:32,942 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:04:16,942 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:04:16,942 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:06:00,938 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:06:00,939 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:07:44,936 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:07:44,937 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:09:29,242 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:09:29,243 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:11:12,945 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:11:12,946 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:12:56,945 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:12:56,945 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:14:40,939 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:14:40,940 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:16:24,933 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:16:24,934 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:18:09,232 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:18:09,233 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:19:52,931 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:19:52,932 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:21:36,977 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:21:36,978 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:23:20,976 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:23:20,976 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:25:04,975 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:25:04,975 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:26:48,972 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:26:48,972 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:28:32,973 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:28:32,973 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:30:16,971 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:30:16,971 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:32:00,971 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:32:00,971 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:33:44,973 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:33:44,973 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:34:09,425 [Timer-1             ] [INFO ]: [←] NOTICE #arcticraft :New Post 'Lasik' (http://me.veekun.com/blog/2012/10/21/lasik/) in feed veekun
+27 Oct 2012 20:35:54,962 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:35:54,962 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:37:38,976 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:37:38,976 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:39:22,987 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:39:22,988 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:41:07,000 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:41:07,000 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:42:51,010 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:42:51,011 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:44:35,003 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:44:35,004 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:46:19,005 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:46:19,005 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:48:03,008 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:48:03,008 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:49:47,011 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:49:47,012 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:51:31,009 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:51:31,010 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:53:15,314 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:53:15,315 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:54:59,014 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:54:59,014 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:56:43,016 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:56:43,016 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 20:58:27,018 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 20:58:27,018 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:00:11,019 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:00:11,021 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:01:55,032 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:01:55,032 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:03:39,036 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:03:39,036 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:05:23,035 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:05:23,036 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:07:07,041 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:07:07,042 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:08:51,048 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:08:51,049 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:10:35,050 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:10:35,050 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:12:19,047 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:12:19,047 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:14:03,048 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:14:03,050 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:15:47,051 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:15:47,052 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:17:31,053 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:17:31,053 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:19:15,059 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:19:15,060 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:20:59,063 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:20:59,063 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:22:43,070 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:22:43,071 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:24:27,069 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:24:27,069 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:26:11,063 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:26:11,063 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:27:55,063 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:27:55,064 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:29:39,068 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:29:39,069 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:31:23,064 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:31:23,064 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:33:07,075 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:33:07,076 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:34:51,072 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:34:51,072 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:36:35,118 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:36:35,118 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:38:19,072 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:38:19,074 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:40:03,124 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:40:03,125 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:41:47,124 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:41:47,124 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:43:31,118 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:43:31,119 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:45:15,117 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:45:15,117 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:46:59,121 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:46:59,121 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:48:43,119 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:48:43,120 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:50:27,116 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:50:27,118 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:52:11,123 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:52:11,124 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:53:55,118 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:53:55,119 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:55:39,113 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:55:39,114 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:57:23,111 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:57:23,111 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 21:59:07,410 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 21:59:07,411 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:00:51,163 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:00:51,163 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:02:35,164 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:02:35,164 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:04:19,165 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:04:19,166 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:06:03,127 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:06:03,127 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:07:47,134 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:07:47,135 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:09:31,182 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:09:31,182 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:11:15,143 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:11:15,143 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:12:59,145 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:12:59,146 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:14:43,147 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:14:43,148 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:16:27,192 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:16:27,193 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:18:11,198 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:18:11,199 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:19:55,203 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:19:55,204 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:21:39,168 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:21:39,168 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:23:23,178 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:23:23,178 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:25:07,189 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:25:07,189 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:26:51,194 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:26:51,194 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:28:35,199 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:28:35,199 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:30:19,201 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:30:19,201 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:32:03,198 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:32:03,198 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:33:47,185 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:33:47,185 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:35:31,186 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:35:31,186 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:37:15,190 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:37:15,191 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:38:59,204 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:38:59,204 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:40:43,212 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:40:43,213 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:42:27,219 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:42:27,220 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:44:11,231 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:44:11,232 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:45:55,231 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:45:55,232 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:47:39,232 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:47:39,232 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:49:23,233 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:49:23,252 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:51:07,253 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:51:07,254 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:52:51,249 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:52:51,249 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:54:35,253 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:54:35,253 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:56:19,265 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:56:19,265 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:58:03,261 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:58:03,261 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 22:59:47,278 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 22:59:47,278 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:01:31,236 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:01:31,236 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:03:15,244 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:03:15,244 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:04:59,259 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:04:59,260 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:06:43,273 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:06:43,273 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:08:27,292 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:08:27,294 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:10:11,548 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:10:11,641 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:11:55,323 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:11:55,323 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:13:39,274 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:13:39,274 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:15:23,285 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:15:23,285 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:17:07,293 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:17:07,294 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:18:51,299 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:18:51,300 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:20:35,315 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:20:35,316 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:22:19,305 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:22:19,399 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:24:03,305 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:24:03,306 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:25:47,300 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:25:47,301 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:27:31,284 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:27:31,284 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:29:15,328 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:29:15,329 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:30:59,332 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:30:59,332 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:32:43,337 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:32:43,337 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net
+27 Oct 2012 23:34:27,335 [irc.esper.net:6667  ] [INFO ]: [→] PING :portlane.esper.net
+27 Oct 2012 23:34:27,335 [irc.esper.net:6667  ] [INFO ]: [←] PONG :portlane.esper.net

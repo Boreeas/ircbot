@@ -1,0 +1,8 @@
+06 Sep 2012 21:39:53,705 [main                ] [DEBUG]: ConfigurationUtils.locate(): base is null, name is bot_esper.plist
+06 Sep 2012 21:39:53,706 [main                ] [DEBUG]: Could not locate file bot_esper.plist at null: no protocol: bot_esper.plist
+06 Sep 2012 21:39:53,725 [main                ] [DEBUG]: Loading configuration from the path bot_esper.plist
+06 Sep 2012 21:39:54,652 [main                ] [INFO ]: Loading core pseudo module
+06 Sep 2012 21:39:54,695 [main                ] [INFO ]: Starting IRCBot[irc.esper.net:6667]
+06 Sep 2012 21:39:55,614 [main                ] [INFO ]: [←] NICK Feeder
+06 Sep 2012 21:39:55,667 [main                ] [INFO ]: [←] USER Feeder * * :Public RSS Feed Bot
+06 Sep 2012 21:39:55,730 [irc.esper.net:6667  ] [INFO ]: [→] :aperture.esper.net NOTICE * :*** Looking up your hostname...
