@@ -3,3 +3,4 @@ nb*
 plugins/*
 target/*
 dependency-reduced-pom.xml
+.out
