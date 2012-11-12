@@ -8,8 +8,8 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.*;
-import net.boreeas.irc.events.*;
 import net.boreeas.irc.events.EventListener;
+import net.boreeas.irc.events.*;
 import net.boreeas.irc.plugins.Plugin;
 import net.boreeas.irc.plugins.PluginManager;
 import org.apache.commons.configuration.ConfigurationException;
@@ -683,6 +683,12 @@ public final class IRCBot extends Thread {
                             return ChannelAccessLevel.VOICE;
                         } else if (modeChar == '@') {
                             return ChannelAccessLevel.OP;
+                        } else if (modeChar == '%') {
+                            return ChannelAccessLevel.HOP;
+                        } else if (modeChar == '&') {
+                            return ChannelAccessLevel.ADMIN;
+                        } else if (modeChar == '~') {
+                            return ChannelAccessLevel.FOUNDER;
                         }
 
                         return ChannelAccessLevel.NONE;

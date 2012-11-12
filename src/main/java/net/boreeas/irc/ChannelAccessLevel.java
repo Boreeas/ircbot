@@ -12,5 +12,8 @@ public enum ChannelAccessLevel {
 
     NONE,
     VOICE,
-    OP;
+    HOP,
+    OP,
+    ADMIN,
+    FOUNDER;
 }
