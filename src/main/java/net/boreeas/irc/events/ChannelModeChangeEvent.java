@@ -4,9 +4,8 @@
  */
 package net.boreeas.irc.events;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import net.boreeas.irc.User;
 
 /**
  *
@@ -14,20 +13,45 @@ import java.util.Map;
  */
 public class ChannelModeChangeEvent extends Event {
 
-    private String name;
+    private static final Set<Character> modesWithParams =
+                                        new HashSet<Character>();
+
+    static {
+        // A list of modes that require a parameter. Any mode that is not in
+        // this list is assumed to not have a parameter. Only non-conflicting
+        // modes are chosen. If two implementations or the RFC conflict,
+        // non is added.
+        modesWithParams.add('b');   // RFC1459
+        modesWithParams.add('e');   // RFC2811
+        modesWithParams.add('f');   // Unreal
+        modesWithParams.add('h');   // RFC2811
+        modesWithParams.add('I');   // RFC2811
+        modesWithParams.add('J');   // Dancer
+        modesWithParams.add('k');   // RFC1459
+        modesWithParams.add('l');   // RFC1459
+        modesWithParams.add('o');   // RFC1459
+        modesWithParams.add('v');   // RFC1459
+        modesWithParams.add('!');   // KineIRCd
+    }
+    private User user;
+    private String channel;
     private Map<Character, String> addedModes;
     private Map<Character, String> removedModes;
 
-    public ChannelModeChangeEvent(String name, Map<Character, String> added, Map<Character, String> removed) {
+    public ChannelModeChangeEvent(User user, String channel,
+                                  Map<Character, String> added,
+                                  Map<Character, String> removed) {
 
-        this.name = name;
+        this.user = user;
+        this.channel = channel;
         this.addedModes = added;
         this.removedModes = removed;
     }
 
-    public ChannelModeChangeEvent(String name, String modes, String[] params) {
+    public ChannelModeChangeEvent(User user, String channel, String modes, String[] params) {
 
-        this.name = name;
+        this.user = user;
+        this.channel = channel;
         this.addedModes = new HashMap<Character, String>();
         this.removedModes = new HashMap<Character, String>();
 
@@ -44,16 +68,27 @@ public class ChannelModeChangeEvent extends Event {
             } else if (mode == '+') {
 
                 adding = true;
+            } else if (modesWithParams.contains(mode) && paramIndex < params.length) {
+
+                (adding
+                 ? addedModes
+                 : removedModes).put(mode, params[paramIndex]);
+                paramIndex++;
             } else {
 
-                (adding ? addedModes : removedModes).put(mode, params[paramIndex]);
-                paramIndex++;
+                (adding
+                 ? addedModes
+                 : removedModes).put(mode, "");
             }
         }
     }
 
-    public String name() {
-        return name;
+    public User user() {
+        return user;
+    }
+
+    public String channel() {
+        return channel;
     }
 
     public Map<Character, String> addedModes() {

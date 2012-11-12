@@ -5,24 +5,26 @@
 
 package net.boreeas.irc.events;
 
+import net.boreeas.irc.User;
+
 /**
  *
  * @author Boreeas
  */
 public class MessageReceivedEvent extends Event {
 
-    private String name;
+    private User user;
     private String target;
     private String message;
 
-    public MessageReceivedEvent(String name, String target, String message) {
-        this.name = name;
+    public MessageReceivedEvent(User user, String target, String message) {
+        this.user = user;
         this.target = target;
         this.message = message;
     }
 
-    public String name() {
-        return name;
+    public User user() {
+        return user;
     }
 
     public String target() {

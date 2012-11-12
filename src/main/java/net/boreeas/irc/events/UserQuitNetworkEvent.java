@@ -5,22 +5,24 @@
 
 package net.boreeas.irc.events;
 
+import net.boreeas.irc.User;
+
 /**
  *
  * @author Boreeas
  */
-public class OtherQuitNetworkEvent extends Event {
+public class UserQuitNetworkEvent extends Event {
 
-    private String name;
+    private User user;
     private String reason;
 
-    public OtherQuitNetworkEvent(String name, String reason) {
-        this.name = name;
+    public UserQuitNetworkEvent(User user, String reason) {
+        this.user = user;
         this.reason = reason;
     }
 
-    public String name() {
-        return name;
+    public User user() {
+        return user;
     }
 
     public String reason() {

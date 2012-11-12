@@ -46,12 +46,48 @@ public class User {
         return host;
     }
 
-    public void changeNick(String nick) {
-        this.nick = nick;
-    }
-
     @Override
     public String toString() {
         return nick + "!" + user + "@" + host;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+
+        if (other == null) {
+            return false;
+        }
+
+        if (other instanceof String) {
+
+            return equals(new User((String) other));
+        } else if (other instanceof User) {
+
+            User u = (User) other;
+            return u.nick().equalsIgnoreCase(nick)
+                   && u.user().equalsIgnoreCase(user)
+                   && u.host().equalsIgnoreCase(host);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+
+        int hash = 3;
+
+        hash = 37 * hash + (this.nick != null
+                            ? this.nick.hashCode()
+                            : 0);
+
+        hash = 37 * hash + (this.user != null
+                            ? this.user.hashCode()
+                            : 0);
+
+        hash = 37 * hash + (this.host != null
+                            ? this.host.hashCode()
+                            : 0);
+        return hash;
     }
 }

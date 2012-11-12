@@ -53,6 +53,7 @@ public class PluginManager {
 
     /**
      * Loads all plugins from the specified location.
+     * <p/>
      * @param pathToPluginFolder The location of the plugins
      */
     public void loadAllPlugins(String pathToPluginFolder) {
@@ -99,12 +100,16 @@ public class PluginManager {
 
     /**
      * Loads a plugin from WORKING_DIR/plugins/filename
+     * <p/>
      * @param filename The filename of the plugin jar file
+     * <p/>
      * @return The loaded plugin
+     * <p/>
      * @throws FileNotFoundException If no file with that name exists
-     * @throws IOException If an IOException occurs while loading the plugin
-     * @throws PluginLoadException If an exception occurs while enabling the
-     * plugin
+     * @throws IOException           If an IOException occurs while loading the
+     *                               plugin
+     * @throws PluginLoadException   If an exception occurs while enabling the
+     *                               plugin
      */
     public Plugin loadPlugin(String filename) throws FileNotFoundException,
                                                      IOException,
@@ -116,12 +121,16 @@ public class PluginManager {
 
     /**
      * Loads a plugin from the specified file
+     * <p/>
      * @param pluginFile The file that contains the plugin
+     * <p/>
      * @return The loaded plugin
+     * <p/>
      * @throws FileNotFoundException If no file with that name exists
-     * @throws IOException If an IOException occurs while loading the plugin
-     * @throws PluginLoadException If an exception occurs while enabling the
-     * plugin
+     * @throws IOException           If an IOException occurs while loading the
+     *                               plugin
+     * @throws PluginLoadException   If an exception occurs while enabling the
+     *                               plugin
      */
     public Plugin loadPlugin(File pluginFile) throws FileNotFoundException,
                                                      IOException,
@@ -160,9 +169,11 @@ public class PluginManager {
 
     /**
      * Disables the first plugin with the given name.
+     * <p/>
      * @param pluginname The name of the plugin to disable
+     * <p/>
      * @return <code>true</code> if a plugin with that name was found,
-     * <code>false</code> otherwise.
+     *         <code>false</code> otherwise.
      */
     public synchronized boolean disablePlugin(String pluginname) {
 
@@ -178,12 +189,14 @@ public class PluginManager {
 
     /**
      * Disables the given plugin.
+     * <p/>
      * @param plugin The plugin to disable
      */
     public synchronized void disablePlugin(Plugin plugin) {
         plugin.onDisable();
         loadedPlugins.remove(plugin);
         loadRequester.getCommandHandler().unregisterPlugin(plugin);
+        loadRequester.unregisterAllEventListeners(plugin);
     }
 
     /**
@@ -196,11 +209,11 @@ public class PluginManager {
         for (Plugin plugin: loadedPlugins) {
             plugin.onDisable();
             loadRequester.getCommandHandler().unregisterPlugin(plugin);
+            loadRequester.unregisterAllEventListeners(plugin);
         }
 
         loadedPlugins.clear();
     }
-
 
     /**
      * Saves all plugins.
@@ -213,6 +226,7 @@ public class PluginManager {
 
     /**
      * Returns the names of all loaded plugins
+     * <p/>
      * @return The names
      */
     public String[] loadedPlugins() {
@@ -229,6 +243,7 @@ public class PluginManager {
 
     /**
      * Returns the filenames of all plugins in WORKING_DIR/plugins
+     * <p/>
      * @return The filenames
      */
     public String[] availablePlugins() {
@@ -238,7 +253,9 @@ public class PluginManager {
 
     /**
      * Returns the filenames of all plugins in the specified directory
+     * <p/>
      * @param pluginDir The directory to check
+     * <p/>
      * @return The filenames
      */
     public String[] availablePlugins(File pluginDir) {
@@ -254,9 +271,11 @@ public class PluginManager {
 
     /**
      * Returns the first plugin to match the given name
+     * <p/>
      * @param name The name of the plugin
+     * <p/>
      * @return The plugin, or <code>null</code> if no plugin with that name
-     * exists
+     *         exists
      */
     public synchronized Plugin getPlugin(String name) {
 

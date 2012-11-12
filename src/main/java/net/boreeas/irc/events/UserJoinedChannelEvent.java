@@ -5,22 +5,24 @@
 
 package net.boreeas.irc.events;
 
+import net.boreeas.irc.User;
+
 /**
  *
  * @author Boreeas
  */
-public class OtherJoinedChannelEvent extends Event {
+public class UserJoinedChannelEvent extends Event {
 
-    private String name;
+    private User user;
     private String channel;
 
-    public OtherJoinedChannelEvent(String name, String channel) {
-        this.name = name;
+    public UserJoinedChannelEvent(User user, String channel) {
+        this.user = user;
         this.channel = channel;
     }
 
-    public String getName() {
-        return name;
+    public User getName() {
+        return user;
     }
 
     public String getChannel() {

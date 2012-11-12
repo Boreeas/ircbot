@@ -9,6 +9,6 @@ package net.boreeas.irc.events;
  *
  * @author Boreeas
  */
-public class SelfQuitNetworkEvent extends Event {
+public class SelfDisconnectedEvent extends Event {
 
 }

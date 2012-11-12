@@ -8,10 +8,10 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import net.boreeas.irc.events.*;
+import net.boreeas.irc.events.EventListener;
+import net.boreeas.irc.plugins.Plugin;
 import net.boreeas.irc.plugins.PluginManager;
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.FileConfiguration;
 import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
@@ -27,17 +27,24 @@ import org.apache.commons.logging.LogFactory;
 public final class IRCBot extends Thread {
 
     private static final Log logger = LogFactory.getLog("IRC");
+
     private final FileConfiguration config;
     private boolean interrupted;
+
     private Socket socket;
     private BufferedReader reader;
     private BufferedWriter writer;
+
     private String currentNick;
+
+    private EventPump eventPump = new EventPump();
     private CommandHandler commandHandler = new CommandHandler();
     private PluginManager pluginManager;
     private Map<String, BotAccessLevel> accessLevels =
                                         new HashMap<String, BotAccessLevel>();
+
     private Set<String> muted = new HashSet<String>();
+
     private boolean whoxSupported;
     private Timer checkConnectionTimer;
 
@@ -115,11 +122,15 @@ public final class IRCBot extends Thread {
             } catch (IOException ex) {
                 logger.fatal("IOException in main loop", ex);
                 disconnect("IOException: " + ex);
+                eventPump.onConnectionInterrupted(new ConnectionInterruptedEvent(ex));
             } catch (RuntimeException ex) {
                 disconnect("Unknown error: " + ex);
+                eventPump.onConnectionInterrupted(new ConnectionInterruptedEvent(ex));
                 throw ex;
             }
         }
+
+        eventPump.onSelfDisconnected(new SelfDisconnectedEvent());
 
         logger.info("Unloading plugins");
         pluginManager.disableAllPlugins();
@@ -168,6 +179,7 @@ public final class IRCBot extends Thread {
         // Remember to reset the timeout
         socket.setSoTimeout(0);
 
+        eventPump.onConnected(new ConnectedEvent());
         changeNick(nick());
         send("USER " + username() + " * * :" + description());
 
@@ -224,7 +236,47 @@ public final class IRCBot extends Thread {
     // --- IO/Action interface
 
 
+    /**
+     * Changes the modes of the bot.
+     * @param mcb The builder for the mode change.
+     * @throws IOException
+     */
+    public void changeModes(ModeChangeBuilder mcb) throws IOException {
 
+        SelfModeChangeEvent evt = new SelfModeChangeEvent(mcb.getAdding(), mcb.getRemoving());
+        eventPump.onSelfModeChange(evt);
+
+        if (!evt.isCancelled()) {
+            for (String line: mcb.format()) {
+                send("MODE " + nick() + " " + line);
+            }
+        }
+    }
+
+    /**
+     * Changes the modes of the specified target.
+     * @param target The target of the mode change. If this is the bot itself,
+     * this method will delegate to {@link #changeModes(ModeChangeBuilder mcb)}.
+     * @param mcb The builder for the mode change
+     * @throws IOException
+     */
+    public void changeModes(String target, ModeChangeBuilder mcb) throws IOException {
+
+        if (target.equalsIgnoreCase(nick())) {
+
+            changeModes(mcb);
+        } else {
+
+            SelfChangeChannelModeEvent evt = new SelfChangeChannelModeEvent(target, mcb.getAdding(), mcb.getRemoving());
+            eventPump.onSelfChangeChannelMode(evt);
+
+            if (!evt.isCancelled()) {
+                for (String line: mcb.format()) {
+                    send("MODE " + target + " " + line);
+                }
+            }
+        }
+    }
 
     /**
      * Sends a command to the server without any additional formatting.
@@ -261,7 +313,15 @@ public final class IRCBot extends Thread {
      * @throws IOException
      */
     public void joinChannel(String channel) throws IOException {
-        send("JOIN " + channel);
+
+        SelfJoinChannelEvent evt = new SelfJoinChannelEvent(channel);
+        eventPump.onSelfJoinChannel(evt);
+
+        if (!evt.isCancelled()) {
+            send("JOIN " + channel);
+        } else {
+            logger.info("Join to channel " + channel + " cancelled");
+        }
     }
 
     /**
@@ -285,7 +345,15 @@ public final class IRCBot extends Thread {
      */
     public void leaveChannel(String channel,
                              String reason) throws IOException {
-        sendRaw("PART " + channel + " :" + reason);
+
+        SelfLeaveChannelEvent evt = new SelfLeaveChannelEvent(channel, reason);
+        eventPump.onSelfLeaveChannel(evt);
+
+        if (!evt.isCancelled()) {
+            send("PART " + channel + " :" + evt.reason());
+        } else {
+            logger.info("Part from channel " + channel + " cancelled");
+        }
     }
 
     /**
@@ -302,13 +370,13 @@ public final class IRCBot extends Thread {
             return;
         }
 
-        if (message.length() > 400) {
+        SendMessageEvent evt = new SendMessageEvent(target, message);
+        eventPump.onSendMessage(evt);
 
-            sendRaw("PRIVMSG " + target + " :" + message.substring(0, 401));
-            sendMessage(target, message.substring(401));
+        if (!evt.isCancelled()) {
+            sendPartial("PRIVMSG", target, evt.getMessage());
         } else {
-
-            sendRaw("PRIVMSG " + target + " :" + message);
+            logger.info("Send message to target " + target +" cancelled");
         }
     }
 
@@ -326,13 +394,23 @@ public final class IRCBot extends Thread {
             return;
         }
 
-        if (message.length() > 400) {
+        SendMessageEvent evt = new SendMessageEvent(target, message);
+        eventPump.onSendNotice(evt);
 
-            sendRaw("NOTICE " + target + " :" + message.substring(0, 401));
-            sendNotice(target, message.substring(401));
+        if (!evt.isCancelled()) {
+            sendPartial("NOTICE", target, evt.getMessage());
         } else {
+            logger.info("Send message to target " + target +" cancelled");
+        }
+    }
 
-            sendRaw("NOTICE " + target + " :" + message);
+    private void sendPartial(String type, String target, String message) throws IOException {
+
+        if (message.length() > 400) {
+            sendRaw(type + " " + target + " :" + message.substring(0, 401));
+            sendPartial(type, target, message.substring(401));
+        } else {
+            sendRaw(type + " " + target + " :" + message);
         }
     }
 
@@ -341,11 +419,27 @@ public final class IRCBot extends Thread {
         String line = reader.readLine().replace("" + (char) 0x01, "");
         logger.info("[→] " + line);
 
-        if (line.startsWith(":")) {
-            line = line.substring(1);
-        }
+        line = removeLeadingColon(line);
+        checkAndFireEvents(splitArgs(line));
 
         return line;
+    }
+
+    private String[] splitArgs(String line) {
+
+        if (line.contains(" :")) {
+
+            String[] firstArgsAndLast = line.split(" :");
+            String[] args = firstArgsAndLast[0].split(" ");
+            String[] actual = new String[args.length + 1];
+
+            System.arraycopy(args, 0, actual, 0, args.length);
+            actual[actual.length - 1] = firstArgsAndLast[1];
+
+            return actual;
+        }
+
+        return line.split(" ");
     }
 
     private void send(String command) throws IOException {
@@ -356,6 +450,81 @@ public final class IRCBot extends Thread {
         writer.flush();
     }
 
+    private void checkAndFireEvents(String[] parts) {
+
+        if (parts[0].equals("PING")) {
+
+            eventPump.onPingReceived(new PingEvent(parts[1]));
+        } else if (parts.length >= 2) {
+
+            if (parts[1].equalsIgnoreCase("JOIN")) {
+
+                User user = new User(parts[0]);
+                String channel = parts[2];
+
+                eventPump.onUserJoinedChannel(new UserJoinedChannelEvent(user, channel));
+            } else if (parts[1].equalsIgnoreCase("PART")) {
+
+                User user = new User(parts[0]);
+                String channel = parts[2];
+
+                UserLeftChannelEvent evt;
+
+                if (parts.length > 3) {
+                    evt = new UserLeftChannelEvent(user, channel, parts[3]);
+                } else {
+                    evt = new UserLeftChannelEvent(user, channel);
+                }
+
+                eventPump.onUserLeftChannel(evt);
+            } else if (parts[1].equalsIgnoreCase("PRIVMSG")) {
+
+                User user = new User(parts[0]);
+                String target = parts[1];
+                String msg = parts[3];
+
+                MessageReceivedEvent evt = new MessageReceivedEvent(user, target, msg);
+                eventPump.onMessageReceived(evt);
+            } else if (parts[1].equalsIgnoreCase("NOTICE")) {
+
+                User user = new User(parts[0]);
+                String target = parts[1];
+                String msg = parts[3];
+
+                MessageReceivedEvent evt = new MessageReceivedEvent(user, target, msg);
+                eventPump.onNoticeReceived(evt);
+            } else if (parts[1].equalsIgnoreCase("QUIT")) {
+
+                User user = new User(parts[0]);
+
+                UserQuitNetworkEvent evt = new UserQuitNetworkEvent(user, parts.length > 2 ? parts[2] : "");
+                eventPump.onUserQuitNetwork(evt);
+            } else if (parts[1].equalsIgnoreCase("MODE")) {
+
+                User user = new User(parts[0]);
+                String channel = parts[2];
+                String modes = parts[3];
+                String[] modeArgs = (String[]) ArrayUtils.subarray(parts, 4, parts.length);
+
+                ChannelModeChangeEvent evt = new ChannelModeChangeEvent(user, channel, modes, modeArgs);
+                eventPump.onChannelModeChange(evt);
+            } else if (parts[1].equals("001")) {
+
+                eventPump.onWelcomeReceived(new WelcomeReceivedEvent());
+            } else if (parts[1].equals("005")) {
+
+                int endIndex = parts.length - ((parts[parts.length - 1].equalsIgnoreCase("are supported by this server")) ? 1 : 0);
+                String[] supports = (String[]) ArrayUtils.subarray(parts, 3, endIndex);
+
+                SupportListReceivedEvent evt = new SupportListReceivedEvent(supports);
+                eventPump.onSupportListReceived(evt);
+            }
+        }
+    }
+
+    private String removeLeadingColon(String string) {
+        return string.startsWith(":") ? string.substring(1) : string;
+    }
 
 
 
@@ -385,18 +554,21 @@ public final class IRCBot extends Thread {
     public void updateAccessLevel(String accName,
                                   BotAccessLevel level) {
 
-        if (level == BotAccessLevel.NOT_REGISTERED) {
+        if (level == BotAccessLevel.NOT_REGISTERED | level == null) {
             return; // Can't set this level
         }
 
         BotAccessLevel old = accessLevels.get(accName);
 
+        // Update cache
         if (level == BotAccessLevel.NORMAL) {
             accessLevels.remove(accName);
         } else {
             accessLevels.put(accName, level);
         }
 
+        // Update config file
+        // Only needed when a change occurred
         if (old != level) {
             switch (level) {
                 case ADMIN:
@@ -406,6 +578,7 @@ public final class IRCBot extends Thread {
                     addAccessToConfig(accName, ConfigKey.MOD);
                     break;
                 default:
+                    logger.error("Unknown bot access level " + level);
                     break;  // Do nothing
             }
 
@@ -447,15 +620,14 @@ public final class IRCBot extends Thread {
      * BotAccessLevel.NORMAL</code> if the access level is not specified, or the
      * access level as specified in the config otherwise.
      * <p/>
-     * @param name   The name to check
-     * @param isNick Tells whether an account name needs to be retrieved
+     * @param name   The user to check
+     * @param isNick Tells whether an account user needs to be retrieved
      * <p/>
      * @return The access level of the user
      * <p/>
      * @throws IOException
      */
-    public BotAccessLevel getAccessLevel(String name,
-                                         boolean isNick)
+    public BotAccessLevel getAccessLevel(String name, boolean isNick)
             throws IOException {
 
         String accountName = isNick
@@ -535,12 +707,12 @@ public final class IRCBot extends Thread {
 
 
     /**
-     * Returns the nickserv account name of the specified user, or "0" if the
+     * Returns the nickserv account user of the specified user, or "0" if the
      * user is not logged in.
      * <p/>
      * @param nick The nick to check
      * <p/>
-     * @return The account name of the user
+     * @return The account user of the user
      * <p/>
      * @throws IOException
      */
@@ -732,20 +904,24 @@ public final class IRCBot extends Thread {
         return s.toLowerCase().startsWith(nick().toLowerCase());
     }
 
-    private void handleCommand(String sender,
-                               String target,
-                               String plugin,
-                               String command,
-                               String[] args)
+    private void handleCommand(String sender, String target, String plugin,
+                               String command, String[] args)
             throws IOException {
 
         logger.debug("Received command " + plugin + " " + command);
 
         User user = new User(sender);
 
-        if (!commandHandler.callCommand(plugin, command, user, target, args)) {
-            sendNotice(user.nick(), "Unknown command '" + plugin + " " + command
-                                    + "'");
+        CommandTriggeredEvent evt = new CommandTriggeredEvent(user, command);
+        eventPump.onCommandTriggered(evt);
+
+        if (!evt.isCancelled()) {
+            if (!commandHandler.callCommand(plugin, command, user, target, args)) {
+                sendNotice(user.nick(), "Unknown command '" + plugin + " " + command
+                                        + "'");
+            }
+        } else {
+            sendNotice(user.nick(), "Command cancelled (reason unknown)");
         }
     }
 
@@ -785,17 +961,38 @@ public final class IRCBot extends Thread {
 
     public void toggleMute(String target) {
 
-        target = target.toLowerCase();
+        ToggleMuteEvent evt = new ToggleMuteEvent(target, !isMuted(target));
+        eventPump.onToggleMute(evt);
 
-        if (muted.contains(target.toLowerCase())) {
-            muted.remove(target.toLowerCase());
-        } else {
-            muted.add(target.toLowerCase());
+        if (!evt.isCancelled()) {
+            target = target.toLowerCase();
+
+            if (muted.contains(target.toLowerCase())) {
+                muted.remove(target.toLowerCase());
+            } else {
+                muted.add(target.toLowerCase());
+            }
         }
     }
 
     public boolean isMuted(String target) {
         return muted.contains(target.toLowerCase());
+    }
+
+    public void registerEventListener(Plugin plugin, EventListener listener) {
+        eventPump.addEventListener(plugin, listener);
+    }
+
+    public void unregisterEventListener(EventListener listener) {
+        eventPump.removeEventListener(listener);
+    }
+
+    public void unregisterAllEventListeners(Plugin plugin) {
+        eventPump.removeAll(plugin);
+    }
+
+    EventPump getEventPump() {
+        return eventPump;
     }
 
 
@@ -866,7 +1063,7 @@ public final class IRCBot extends Thread {
     /**
      * Returns the plugin directory this bot uses.
      * <p/>
-     * @return The directory name
+     * @return The directory user
      */
     public String pluginDir() {
         return config.getString(ConfigKey.PLUGIN_DIR.key(),

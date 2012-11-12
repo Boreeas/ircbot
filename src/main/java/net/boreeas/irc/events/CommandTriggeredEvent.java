@@ -4,22 +4,24 @@
  */
 package net.boreeas.irc.events;
 
+import net.boreeas.irc.User;
+
 /**
  *
  * @author Boreeas
  */
 public class CommandTriggeredEvent extends Event {
 
-    private String name;
+    private User user;
     private String command;
 
-    public CommandTriggeredEvent(String name, String command) {
-        this.name = name;
+    public CommandTriggeredEvent(User user, String command) {
+        this.user = user;
         this.command = command;
     }
 
-    public String name() {
-        return name;
+    public User user() {
+        return user;
     }
 
     public String command() {
