@@ -4,7 +4,7 @@ This is an IRCBot, focused on being modular, easy to extend, and easy to update 
 
 **Events** are fired by the bot on different occasions. Plugins can register event listeners to provide options that can't be covered by commands.
 
-The bot requires a Core module to start, to enable restartless updating even of core features. Any module with a filename that matches Core(\..*)? can be used as such a module.
+The bot requires a Core module to start, to enable restartless updating even of core features. Any module with a filename that matches Core(\\.[^\\.]*)? can be used as such a module.
 A default implementation can be found at https://github.com/Boreeas/ircbot-core. Core modules can define any command and feature, but are encouraged to provide the following functionality:
 * Join/Leave channels
 * Stop the bot
