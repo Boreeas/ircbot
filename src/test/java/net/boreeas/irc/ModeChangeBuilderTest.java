@@ -71,31 +71,32 @@ public class ModeChangeBuilderTest extends TestCase {
         // expected = something like "+abcd xyz abc 123", "+ef-AB qwe asd XYZ", "-CDEF !§$ QWE ASD"
 
         List<String> result = mcb.format();
+        System.out.println(result);
         assertEquals(3, result.size());
         assertEquals('+', result.get(0).charAt(0));
         assertEquals('+', result.get(1).charAt(0));
-        assertTrue(result.get(1).contains("-"));
+        assertTrue("Second line does not contain change to REMOVEMODE", result.get(1).contains("-"));
         assertEquals('-', result.get(2).charAt(0));
 
         for (String part: result) {
             if (part.contains("a"))
-                assertTrue(part.contains("xyz"));
+                assertTrue("Mode a set without param xyz", part.contains("xyz"));
             if (part.contains("b"))
-                assertTrue(part.contains("abc"));
+                assertTrue("Mode b set without param abc", part.contains("abc"));
             if (part.contains("c"))
-                assertTrue(part.contains("123"));
+                assertTrue("Mode c set without param 123", part.contains("123"));
             if (part.contains("e"))
-                assertTrue(part.contains("qwe"));
+                assertTrue("Mode e set without param qwe", part.contains("qwe"));
             if (part.contains("f"))
-                assertTrue(part.contains("asd"));
+                assertTrue("Mode f set without param asd", part.contains("asd"));
             if (part.contains("A"))
-                assertTrue(part.contains("XYZ"));
+                assertTrue("Mode A set without param XYZ", part.contains("XYZ"));
             if (part.contains("C"))
-                assertTrue(part.contains("!§$"));
+                assertTrue("Mode C set without param !§$", part.contains("!§$"));
             if (part.contains("D"))
-                assertTrue(part.contains("QWE"));
+                assertTrue("Mode D set without param QWE", part.contains("QWE"));
             if (part.contains("E"))
-                assertTrue(part.contains("ASD"));
+                assertTrue("Mode E set without param ASD", part.contains("ASD"));
         }
     }
 }
