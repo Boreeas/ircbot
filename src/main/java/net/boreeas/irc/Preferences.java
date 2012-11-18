@@ -59,6 +59,7 @@ public class Preferences {
         channelDefaults.put(CHANNEL_PREFER_MSG, "false");
 
         this.file = file;
+        new File(file).getParentFile().mkdirs(); // Assert that file can be created
 
         try {
             loadFromFile();
