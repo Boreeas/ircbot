@@ -33,6 +33,7 @@ public abstract class Command {
         return bot.getChanAccess(nick, chan).compareTo(level) > 0;
     }
 
+    @Deprecated
     protected void nope(String nick, String target, BotAccessLevel level)
             throws IOException {
 
@@ -40,6 +41,7 @@ public abstract class Command {
                                + " is needed.");
     }
 
+    @Deprecated
     protected String getReplyTarget(String sender, String msgTarget) {
 
         return (msgTarget.startsWith("#")) ? msgTarget : sender;
