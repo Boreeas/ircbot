@@ -68,9 +68,34 @@ public class ModeChangeBuilderTest extends TestCase {
         mcb.removeMode('E', "ASD");
         mcb.removeMode('F');
 
-        List<String> expected = Arrays.asList("+abcd xyz abc 123",
-                                              "+ef-AB qwe asd XYZ",
-                                              "-CDEF !§$ QWE ASD");
-        assertEquals(expected, mcb.format());
+        // expected = something like "+abcd xyz abc 123", "+ef-AB qwe asd XYZ", "-CDEF !§$ QWE ASD"
+
+        List<String> result = mcb.format();
+        assertEquals(3, result.size());
+        assertEquals('+', result.get(0).charAt(0));
+        assertEquals('+', result.get(1).charAt(0));
+        assertTrue(result.get(1).contains("-"));
+        assertEquals('-', result.get(2).charAt(0));
+
+        for (String part: result) {
+            if (part.contains("a"))
+                assertTrue(part.contains("xyz"));
+            if (part.contains("b"))
+                assertTrue(part.contains("abc"));
+            if (part.contains("c"))
+                assertTrue(part.contains("123"));
+            if (part.contains("e"))
+                assertTrue(part.contains("qwe"));
+            if (part.contains("f"))
+                assertTrue(part.contains("asd"));
+            if (part.contains("A"))
+                assertTrue(part.contains("XYZ"));
+            if (part.contains("C"))
+                assertTrue(part.contains("!§$"));
+            if (part.contains("D"))
+                assertTrue(part.contains("QWE"));
+            if (part.contains("E"))
+                assertTrue(part.contains("ASD"));
+        }
     }
 }

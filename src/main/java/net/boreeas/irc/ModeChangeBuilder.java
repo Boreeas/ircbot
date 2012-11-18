@@ -49,16 +49,16 @@ public class ModeChangeBuilder {
                      new ArrayList<String>((adding.size() + removing.size()) / 4 + 1); // 4 modes per lines
 
         int count = 1;
-        StringBuilder modeBuilder = new StringBuilder('+');
+        StringBuilder modeBuilder = new StringBuilder("+");
         StringBuilder paramBuilder = new StringBuilder();
 
         for (Entry<Character, String> addingMode: adding.entrySet()) {
 
             if (count > 4) {
 
-                result.add(modeBuilder + " " + paramBuilder);
+                result.add(modeBuilder.toString().trim() + " " + paramBuilder.toString().trim().replaceAll(" +", " "));
                 count = 1;
-                modeBuilder = new StringBuilder('+');
+                modeBuilder = new StringBuilder("+");
                 paramBuilder = new StringBuilder();
             }
 
@@ -70,9 +70,9 @@ public class ModeChangeBuilder {
 
         if (count > 4) {
 
-            result.add(modeBuilder + " " + paramBuilder);
+            result.add(modeBuilder.toString().trim() + " " + paramBuilder.toString().trim().replaceAll(" +", " "));
             count = 1;
-            modeBuilder = new StringBuilder('-');
+            modeBuilder = new StringBuilder("-");
             paramBuilder = new StringBuilder();
         }
 
@@ -80,9 +80,9 @@ public class ModeChangeBuilder {
 
             if (count > 4) {
 
-                result.add(modeBuilder + " " + paramBuilder);
+                result.add(modeBuilder.toString().trim() + " " + paramBuilder.toString().trim().replaceAll(" +", " "));
                 count = 1;
-                modeBuilder = new StringBuilder('-');
+                modeBuilder = new StringBuilder("-");
                 paramBuilder = new StringBuilder();
             }
 
