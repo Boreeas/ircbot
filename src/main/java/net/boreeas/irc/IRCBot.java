@@ -6,6 +6,7 @@ package net.boreeas.irc;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.*;
 import net.boreeas.irc.events.EventListener;
@@ -45,7 +46,7 @@ public final class IRCBot extends Thread {
 
     private Set<String> muted = new HashSet<String>();
 
-    private boolean whoxSupported;
+    private Preferences preferences;
     private Timer checkConnectionTimer;
 
     public IRCBot(final FileConfiguration config) {
@@ -66,6 +67,8 @@ public final class IRCBot extends Thread {
         }
 
         this.currentNick = config.getString(ConfigKey.NICK.key());
+        this.preferences = new Preferences(pluginDataDir() + "/preferences");
+        preferences.setBoolean(Preferences.GLOBAL_WHOX, false); // Assume that no whox exists for now
 
         loadAccessLevels();
         loadPlugins();
@@ -116,8 +119,7 @@ public final class IRCBot extends Thread {
                     continue;
                 }
 
-                onInputReceived(readLine());
-
+                checkAndFireEvents(readLine().split(" "));
 
             } catch (IOException ex) {
                 logger.fatal("IOException in main loop", ex);
@@ -152,7 +154,7 @@ public final class IRCBot extends Thread {
      */
     public void connect() throws IOException {
 
-        socket = new Socket(host(), port());
+        socket = new Socket(server(), port());
 
         reader =
         new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -218,7 +220,7 @@ public final class IRCBot extends Thread {
         interrupted = true;
     }
 
-    void reconnect() {
+    public void reconnect() {
 
         pluginManager.saveAllPlugins();
         disconnect();
@@ -416,17 +418,14 @@ public final class IRCBot extends Thread {
 
     private String readLine() throws IOException {
 
-        String line = reader.readLine().replace("" + (char) 0x01, "");
+        String line = reader.readLine().replace("" + (char) 0x01, "");  // Strip CTCP
         logger.info("[→] " + line);
-
-        line = removeLeadingColon(line);
-        checkAndFireEvents(splitArgs(line));
-
-        return line;
+        return removeLeadingColon(line);
     }
 
     private String[] splitArgs(String line) {
 
+        // IRC "last argument follows" indicator for args that contain whitespace
         if (line.contains(" :")) {
 
             String[] firstArgsAndLast = line.split(" :");
@@ -533,8 +532,8 @@ public final class IRCBot extends Thread {
 
 
     private void loadAccessLevels() {
-        String[] mods = config.getStringArray(ConfigKey.MOD.key());
-        String[] admins = config.getStringArray(ConfigKey.ADMIN.key());
+        String[] mods = config.getStringArray(ConfigKey.MODS.key());
+        String[] admins = config.getStringArray(ConfigKey.ADMINS.key());
         String[] owner = config.getStringArray(ConfigKey.OWNER.key());
 
         addAllAccessLevels(mods, BotAccessLevel.MOD);
@@ -572,10 +571,10 @@ public final class IRCBot extends Thread {
         if (old != level) {
             switch (level) {
                 case ADMIN:
-                    addAccessToConfig(accName, ConfigKey.ADMIN);
+                    addAccessToConfig(accName, ConfigKey.ADMINS);
                     break;
                 case MOD:
-                    addAccessToConfig(accName, ConfigKey.MOD);
+                    addAccessToConfig(accName, ConfigKey.MODS);
                     break;
                 default:
                     logger.error("Unknown bot access level " + level);
@@ -585,10 +584,10 @@ public final class IRCBot extends Thread {
             if (old != null) {
                 switch (old) {
                     case ADMIN:
-                        removeAccessFromConfig(accName, ConfigKey.ADMIN);
+                        removeAccessFromConfig(accName, ConfigKey.ADMINS);
                         break;
                     case MOD:
-                        removeAccessFromConfig(accName, ConfigKey.MOD);
+                        removeAccessFromConfig(accName, ConfigKey.MODS);
                         break;
                     default:
                         break;  // Do nothing
@@ -662,12 +661,13 @@ public final class IRCBot extends Thread {
                                             String channel) {
 
         try {
+            // If we got no ENDOFNAMES after 2 seconds, assume that we missed it
+            socket.setSoTimeout(2000);
             sendRaw("NAMES " + channel);
-            boolean gotNames = false; // 353
 
-            while (!gotNames) {
+            while (true) {
 
-                String reply = readLine();
+                String reply = removeLeadingColon(readLine());
                 String[] parts = reply.split(" ");
 
                 if (parts[1].equals("353")) {
@@ -693,19 +693,24 @@ public final class IRCBot extends Thread {
 
                         return ChannelAccessLevel.NONE;
                     }
-
                 } else if (parts[1].equals("366")) {    // End of Names
-
                     return ChannelAccessLevel.NONE;
                 } else {
-
-                    onInputReceived(reply);
+                    checkAndFireEvents(parts);
                 }
             }
-
+        } catch (SocketTimeoutException ex) {
+            // we missed it, break
         } catch (IOException ex) {
             logger.fatal("Connection interrupted", ex);
             disconnect("IOException: " + ex);
+        } finally {
+            try {
+                socket.setSoTimeout(0); // Reset timeout
+            } catch (SocketException ex) {
+                logger.fatal("Fatal protocol error", ex);
+                disconnect("SocketException: " + ex);
+            }
         }
 
         return ChannelAccessLevel.NONE;
@@ -724,7 +729,7 @@ public final class IRCBot extends Thread {
      */
     public String getAccountName(String nick) throws IOException {
 
-        if (whoxSupported) {
+        if (preferences.getBoolean(Preferences.GLOBAL_WHOX)) {
             return getAccountNameWHOX(nick);
         } else {
             return getAccountNameWHOIS(nick);
@@ -792,145 +797,67 @@ public final class IRCBot extends Thread {
 
         sendRaw("WHO " + nick + " %a");
 
-        while (true) {
+        // Set timeout to 2 seconds, if we didn't get ENDOFWHOX by then,
+        // assume we missed it
+        socket.setSoTimeout(2000);
+        try {
+            while (true) {
 
-            String reply = readLine();
-            String[] parts = reply.split(" ");
+                String reply = removeLeadingColon(readLine());
+                String[] parts = reply.split(" ");
 
-            if (parts[1].equals("354")) {
+                if (parts[1].equals("354")) {
 
-                String user = parts[3];
+                    String user = parts[3];
 
-                if (user.startsWith(":")) {
-                    user = user.substring(1);
-                }
-
-                logger.debug("Accountname for " + nick + " is " + user);
-                return user;
-            } else if (parts[1].equals("315") && parts[3].equals(nick)) {
-
-                logger.debug("Received 315 END OF WHO LIST while checking "
-                             + "account name of " + nick);
-                break;  // End of WHO list
-            } else {
-
-                onInputReceived(reply);
-            }
-        }
-
-
-        return "0";
-    }
-
-
-
-
-    // --- Input handling ---
-
-
-
-
-    private void onInputReceived(String line) throws IOException {
-
-        if (line.startsWith("PING")) {
-            sendRaw("PONG :" + line.split(":")[1]);
-        } else {
-
-            String[] parts = line.split(" ");
-            String sender = parts[0];
-            String type = parts[1];
-            Object[] args = ArrayUtils.subarray(parts, 2, parts.length);
-            handleChat(sender, type, (String[]) args);
-        }
-    }
-
-    private void handleChat(String sender,
-                            String type,
-                            String[] args)
-            throws IOException {
-
-        if (type.equals("001")) {
-
-            for (String chan: config.getStringArray(ConfigKey.CHANNELS.key())) {
-
-                joinChannel(chan);
-            }
-        } else if (type.equals("005")) {
-
-            if (ArrayUtils.contains(args, "WHOX")) {
-                whoxSupported = true;
-            }
-        } else if (type.equals("PRIVMSG")
-                   || type.equals("NOTICE")) {
-
-
-            if (args[1].startsWith(":")) {
-                args[1] = args[1].substring(1);
-            }
-
-            if (checkForCommandPrefix(args[1]) || checkForBotNamePrefix(args[1])) {
-
-                String plugin, command;
-                Object[] realArgs;
-
-                if (checkForCommandPrefix(args[1])) {
-
-                    if (args.length < 3) {
-                        sendNotice(args[0], "Missing command.");
-                        return;
+                    if (user.startsWith(":")) {
+                        user = user.substring(1);
                     }
 
-                    plugin = args[1].substring(commandPrefix().length());
-                    command = args[2];
-                    realArgs = ArrayUtils.subarray(args, 3, args.length);
+                    logger.debug("Accountname for " + nick + " is " + user);
+                    return user;
+                } else if (parts[1].equals("315") && parts[3].equals(nick)) {
+
+                    logger.debug("Received 315 END OF WHO LIST while checking "
+                                 + "account name of " + nick);
+                    break;  // End of WHO list
                 } else {
 
-                    if (args.length < 4) {
-                        sendNotice(args[0], "Missing command.");
-                        return;
-                    }
-
-                    plugin = args[2];
-                    command = args[3];
-                    realArgs = ArrayUtils.subarray(args, 4, args.length);
+                    checkAndFireEvents(parts);
                 }
-
-                handleCommand(sender, args[0], plugin, command,
-                              (String[]) realArgs);
-
             }
+        } catch (SocketTimeoutException ex) {
+            // We missed endofwhox
+        } finally {
+            socket.setSoTimeout(0); // Reset timeout
         }
+
+        return "0"; // WHOX "Not registered" response
     }
 
-    private boolean checkForCommandPrefix(String s) {
-        return s.startsWith(commandPrefix());
-    }
 
-    private boolean checkForBotNamePrefix(String s) {
-        return s.toLowerCase().startsWith(nick().toLowerCase());
-    }
 
-    private void handleCommand(String sender, String target, String plugin,
-                               String command, String[] args)
+
+    // --- Command interface ---
+
+
+    public void handleCommand(User user, String target, String plugin,
+                              String command, String[] args)
             throws IOException {
 
         logger.debug("Received command " + plugin + " " + command);
-
-        User user = new User(sender);
 
         CommandTriggeredEvent evt = new CommandTriggeredEvent(user, command);
         eventPump.onCommandTriggered(evt);
 
         if (!evt.isCancelled()) {
             if (!commandHandler.callCommand(plugin, command, user, target, args)) {
-                sendNotice(user.nick(), "Unknown command '" + plugin + " " + command
-                                        + "'");
+                sendNotice(user.nick(), "Unknown command '" + plugin + " " + command + "'");
             }
         } else {
             sendNotice(user.nick(), "Command cancelled (reason unknown)");
         }
     }
-
 
 
 
@@ -962,7 +889,7 @@ public final class IRCBot extends Thread {
      * @return the directory
      */
     public String pluginDataDir() {
-        return pluginDir() + "/" + host() + "." + port() + "." + nick();
+        return pluginDir() + "/" + server() + "." + port() + "." + nick();
     }
 
     public void toggleMute(String target) {
@@ -994,13 +921,44 @@ public final class IRCBot extends Thread {
     }
 
     public void unregisterAllEventListeners(Plugin plugin) {
-        eventPump.removeAll(plugin);
+        eventPump.removeAllListeners(plugin);
     }
 
-    EventPump getEventPump() {
+    public EventPump getEventPump() {
         return eventPump;
     }
 
+    public Preferences getPreferences() {
+        return preferences;
+    }
+
+    /**
+     * Determines whether the given string is an IRC channel by checking if the
+     * first character is a support channel type by the server.
+     * <p/>
+     * @param chan The string to check.
+     * <p/>
+     * @return <code>true</code> if the string is a channel, <code>false</code>
+     *         otherwise.
+     */
+    public boolean isChannel(String chan) {
+        return preferences.getString(Preferences.GLOBAL_CHANTYPES).contains(Character.toString(chan.charAt(0)));
+    }
+
+    /**
+     * Returns the reply target. This is the target of the original message if
+     * it is a channel, or else the sender or the message.
+     * <p/>
+     * @param messageTarget The target of the message originally received.
+     * @param sender        The sender of the message.
+     * <p/>
+     * @return The target to send the replies to.
+     */
+    public String getReplyTarget(String messageTarget, String sender) {
+        return isChannel(messageTarget)
+               ? messageTarget
+               : sender;
+    }
 
 
     // --- Configuration access methods ---
@@ -1022,11 +980,11 @@ public final class IRCBot extends Thread {
     }
 
     /**
-     * Returns the host the bot is connected to.
+     * Returns the server the bot is connected to.
      * <p/>
-     * @return The host
+     * @return The server
      */
-    public String host() {
+    public String server() {
         return config.getString(ConfigKey.HOST.key());
     }
 
@@ -1063,7 +1021,7 @@ public final class IRCBot extends Thread {
      * @return The description of the bot
      */
     public String description() {
-        return config.getString(ConfigKey.DESC.key());
+        return config.getString(ConfigKey.REALNAME.key());
     }
 
     /**
@@ -1073,7 +1031,7 @@ public final class IRCBot extends Thread {
      */
     public String pluginDir() {
         return config.getString(ConfigKey.PLUGIN_DIR.key(),
-                                ConfigKey.PLUGIN_DIR.def());
+                                ConfigKey.PLUGIN_DIR.defaultValue());
     }
 
     /**
@@ -1086,58 +1044,15 @@ public final class IRCBot extends Thread {
         return config;
     }
 
-    private String commandPrefix() {
-        return config.getString("cmd_prefix", "!");
+    public String commandPrefix(String channel) {
+        return preferences.getString(channel, Preferences.CHANNEL_CMD_PREFIX);
     }
+
+
+
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "[" + host() + ":" + port() + "]";
-    }
-
-    private enum ConfigKey {
-
-        HOST("host"),
-        PORT("port"),
-        NICK("nick"),
-        USER("user"),
-        DESC("desc"),
-        CHANNELS("channels"),
-        MOD("access_mod"),
-        ADMIN("access_admin"),
-        OWNER("access_owner"),
-        PLUGIN_DIR("plugin_dir", "plugins"),
-        PLUGINS("plugins");
-        private String key;
-        private String def;
-        private boolean required = true;
-
-        private ConfigKey(String key) {
-            this.key = key;
-        }
-
-        private ConfigKey(String key,
-                          String def) {
-            this.key = key;
-            this.def = def;
-            this.required = false;
-        }
-
-        public String key() {
-            return key;
-        }
-
-        public String def() {
-            if (required) {
-                throw new RuntimeException(toString() + " (" + key + ") is "
-                                           + "required and has no default value");
-            }
-
-            return def;
-        }
-
-        public boolean isRequired() {
-            return required;
-        }
+        return getClass().getSimpleName() + "[" + server() + ":" + port() + "]";
     }
 }

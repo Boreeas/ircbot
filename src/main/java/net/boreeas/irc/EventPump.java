@@ -2,12 +2,32 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.boreeas.irc.events;
+package net.boreeas.irc;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import net.boreeas.irc.events.AccessLevelChangeEvent;
+import net.boreeas.irc.events.ChannelModeChangeEvent;
+import net.boreeas.irc.events.CommandTriggeredEvent;
+import net.boreeas.irc.events.ConnectedEvent;
+import net.boreeas.irc.events.ConnectionInterruptedEvent;
+import net.boreeas.irc.events.EventListener;
+import net.boreeas.irc.events.MessageReceivedEvent;
+import net.boreeas.irc.events.PingEvent;
+import net.boreeas.irc.events.SelfChangeChannelModeEvent;
+import net.boreeas.irc.events.SelfDisconnectedEvent;
+import net.boreeas.irc.events.SelfJoinChannelEvent;
+import net.boreeas.irc.events.SelfLeaveChannelEvent;
+import net.boreeas.irc.events.SelfModeChangeEvent;
+import net.boreeas.irc.events.SendMessageEvent;
+import net.boreeas.irc.events.SupportListReceivedEvent;
+import net.boreeas.irc.events.ToggleMuteEvent;
+import net.boreeas.irc.events.UserJoinedChannelEvent;
+import net.boreeas.irc.events.UserLeftChannelEvent;
+import net.boreeas.irc.events.UserQuitNetworkEvent;
+import net.boreeas.irc.events.WelcomeReceivedEvent;
 import net.boreeas.irc.plugins.Plugin;
 
 /**
@@ -20,7 +40,7 @@ public class EventPump implements EventListener {
                                             new HashMap<Plugin, Set<EventListener>>();
     private Set<EventListener> eventListeners = new HashSet<EventListener>();
 
-    public void addEventListener(Plugin plugin, EventListener listener) {
+    void addEventListener(Plugin plugin, EventListener listener) {
 
         eventListeners.add(listener);
 
@@ -33,11 +53,11 @@ public class EventPump implements EventListener {
         forPlugin.add(listener);
     }
 
-    public void removeEventListener(EventListener listener) {
+    void removeEventListener(EventListener listener) {
         eventListeners.remove(listener);
     }
 
-    public void removeAll(Plugin plugin) {
+    void removeAllListeners(Plugin plugin) {
 
         Set<EventListener> forPlugin = byPlugin.get(plugin);
 
