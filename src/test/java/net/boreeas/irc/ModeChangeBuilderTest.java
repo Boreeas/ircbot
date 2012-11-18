@@ -71,6 +71,6 @@ public class ModeChangeBuilderTest extends TestCase {
         List<String> expected = Arrays.asList("+abcd xyz abc 123",
                                               "+ef-AB qwe asd XYZ",
                                               "-CDEF !§$ QWE ASD");
-        assertEquals(mcb.getAdding(), expected);
+        assertEquals(expected, mcb.format());
     }
 }
