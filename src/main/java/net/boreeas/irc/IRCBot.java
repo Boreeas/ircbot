@@ -396,6 +396,11 @@ public final class IRCBot extends Thread {
             return;
         }
 
+        if (preferences.getBoolean(target, Preferences.CHANNEL_PREFER_MSG)) {
+            sendMessage(target, message);
+            return;
+        }
+
         SendMessageEvent evt = new SendMessageEvent(target, message);
         eventPump.onSendNotice(evt);
 

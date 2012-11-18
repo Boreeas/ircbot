@@ -35,6 +35,7 @@ public class Preferences {
     public static final String GLOBAL_WHOX = "whox";
     public static final String GLOBAL_CHANTYPES = "chantypes";
     public static final String CHANNEL_CMD_PREFIX = "cmd-prefix";
+    public static final String CHANNEL_PREFER_MSG = "prefer-msg";
 
     private static final Log logger = LogFactory.getLog("Preferences");
 
@@ -55,6 +56,7 @@ public class Preferences {
         globalDefaults.put(GLOBAL_WHOX, "false");
         globalDefaults.put(GLOBAL_CHANTYPES, "#");
         channelDefaults.put(CHANNEL_CMD_PREFIX, "!");
+        channelDefaults.put(CHANNEL_PREFER_MSG, "false");
 
         this.file = file;
 
