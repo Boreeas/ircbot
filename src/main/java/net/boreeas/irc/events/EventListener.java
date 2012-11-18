@@ -31,6 +31,7 @@ public interface EventListener {
     void onSupportListReceived(SupportListReceivedEvent evt);
     void onConnected(ConnectedEvent evt);
     void onConnectionInterrupted(ConnectionInterruptedEvent evt);
+    void onServerNotice(ServerNoticeEvent evt);
     void onCommandTriggered(CommandTriggeredEvent evt);
     void onToggleMute(ToggleMuteEvent evt);
     void onAccessLevelChange(AccessLevelChangeEvent evt);

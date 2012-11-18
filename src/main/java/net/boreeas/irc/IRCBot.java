@@ -491,12 +491,17 @@ public final class IRCBot extends Thread {
                 eventPump.onMessageReceived(evt);
             } else if (parts[1].equalsIgnoreCase("NOTICE")) {
 
-                User user = new User(parts[0]);
-                String target = parts[1];
-                String msg = parts[3];
+                if (parts[0].contains("!") && parts[0].contains("@s")) {
+                    User user = new User(parts[0]);
+                    String target = parts[1];
+                    String msg = parts[3];
 
-                MessageReceivedEvent evt = new MessageReceivedEvent(user, target, msg);
-                eventPump.onNoticeReceived(evt);
+                    MessageReceivedEvent evt =
+                                         new MessageReceivedEvent(user, target, msg);
+                    eventPump.onNoticeReceived(evt);
+                } else {
+                    eventPump.onServerNotice(new ServerNoticeEvent(parts[0], parts[3]));
+                }
             } else if (parts[1].equalsIgnoreCase("QUIT")) {
 
                 User user = new User(parts[0]);

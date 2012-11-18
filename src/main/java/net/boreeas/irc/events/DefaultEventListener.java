@@ -97,4 +97,8 @@ public class DefaultEventListener implements EventListener {
     public void onConnectionInterrupted(ConnectionInterruptedEvent evt) {
     }
 
+    @Override
+    public void onServerNotice(ServerNoticeEvent evt) {
+    }
+
 }

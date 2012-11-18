@@ -8,26 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import net.boreeas.irc.events.AccessLevelChangeEvent;
-import net.boreeas.irc.events.ChannelModeChangeEvent;
-import net.boreeas.irc.events.CommandTriggeredEvent;
-import net.boreeas.irc.events.ConnectedEvent;
-import net.boreeas.irc.events.ConnectionInterruptedEvent;
-import net.boreeas.irc.events.EventListener;
-import net.boreeas.irc.events.MessageReceivedEvent;
-import net.boreeas.irc.events.PingEvent;
-import net.boreeas.irc.events.SelfChangeChannelModeEvent;
-import net.boreeas.irc.events.SelfDisconnectedEvent;
-import net.boreeas.irc.events.SelfJoinChannelEvent;
-import net.boreeas.irc.events.SelfLeaveChannelEvent;
-import net.boreeas.irc.events.SelfModeChangeEvent;
-import net.boreeas.irc.events.SendMessageEvent;
-import net.boreeas.irc.events.SupportListReceivedEvent;
-import net.boreeas.irc.events.ToggleMuteEvent;
-import net.boreeas.irc.events.UserJoinedChannelEvent;
-import net.boreeas.irc.events.UserLeftChannelEvent;
-import net.boreeas.irc.events.UserQuitNetworkEvent;
-import net.boreeas.irc.events.WelcomeReceivedEvent;
+import net.boreeas.irc.events.*;
 import net.boreeas.irc.plugins.Plugin;
 
 /**
@@ -211,6 +192,13 @@ public class EventPump implements EventListener {
     public void onAccessLevelChange(AccessLevelChangeEvent evt) {
         for (EventListener listener: eventListeners) {
             listener.onAccessLevelChange(evt);
+        }
+    }
+
+    @Override
+    public void onServerNotice(ServerNoticeEvent evt) {
+        for (EventListener listener: eventListeners) {
+            listener.onServerNotice(evt);
         }
     }
 }
