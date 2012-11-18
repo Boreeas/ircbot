@@ -74,6 +74,8 @@ public class ModeChangeBuilder {
             count = 1;
             modeBuilder = new StringBuilder("-");
             paramBuilder = new StringBuilder();
+        } else {
+            modeBuilder.append("-");
         }
 
         for (Entry<Character, String> removingMode: removing.entrySet()) {

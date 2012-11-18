@@ -79,23 +79,25 @@ public class ModeChangeBuilderTest extends TestCase {
         assertEquals('-', result.get(2).charAt(0));
 
         for (String part: result) {
-            if (part.contains("a"))
+            System.out.println("Testing: " + result);
+            String modes = part.split(" ")[0];
+            if (modes.contains("a"))
                 assertTrue("Mode a set without param xyz", part.contains("xyz"));
-            if (part.contains("b"))
+            if (modes.contains("b"))
                 assertTrue("Mode b set without param abc", part.contains("abc"));
-            if (part.contains("c"))
+            if (modes.contains("c"))
                 assertTrue("Mode c set without param 123", part.contains("123"));
-            if (part.contains("e"))
+            if (modes.contains("e"))
                 assertTrue("Mode e set without param qwe", part.contains("qwe"));
-            if (part.contains("f"))
+            if (modes.contains("f"))
                 assertTrue("Mode f set without param asd", part.contains("asd"));
-            if (part.contains("A"))
+            if (modes.contains("A"))
                 assertTrue("Mode A set without param XYZ", part.contains("XYZ"));
-            if (part.contains("C"))
+            if (modes.contains("C"))
                 assertTrue("Mode C set without param !§$", part.contains("!§$"));
-            if (part.contains("D"))
+            if (modes.contains("D"))
                 assertTrue("Mode D set without param QWE", part.contains("QWE"));
-            if (part.contains("E"))
+            if (modes.contains("E"))
                 assertTrue("Mode E set without param ASD", part.contains("ASD"));
         }
     }
