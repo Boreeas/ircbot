@@ -14,7 +14,7 @@ public class PingEvent extends Event {
     private String code;
 
     public PingEvent(String code) {
-
+        this.code = code;
     }
 
     public String code() {

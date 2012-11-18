@@ -21,6 +21,11 @@ public class User {
     }
 
     public User(String hostmask) {
+
+        if (!(hostmask.contains("!") && hostmask.contains("@"))) {
+            throw new IllegalArgumentException("Not a valid hostmask");
+        }
+
         String[] nickAndRest = hostmask.split("!");
         String[] userAndHost = nickAndRest[1].split("@");
 
