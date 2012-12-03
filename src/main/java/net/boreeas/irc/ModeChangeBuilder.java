@@ -19,20 +19,24 @@ public class ModeChangeBuilder {
     private Map<Character, String> adding = new HashMap<Character, String>();
     private Map<Character, String> removing = new HashMap<Character, String>();
 
-    public void addMode(char mode, String param) {
+    public ModeChangeBuilder addMode(char mode, String param) {
         adding.put(mode, param);
+        return this;
     }
 
-    public void addMode(char mode) {
+    public ModeChangeBuilder addMode(char mode) {
         addMode(mode, "");
+        return this;
     }
 
-    public void removeMode(char mode, String param) {
+    public ModeChangeBuilder removeMode(char mode, String param) {
         removing.put(mode, param);
+        return this;
     }
 
-    public void removeMode(char mode) {
+    public ModeChangeBuilder removeMode(char mode) {
         removing.put(mode, "");
+        return this;
     }
 
     public Map<Character, String> getAdding() {

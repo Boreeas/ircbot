@@ -13,7 +13,7 @@ import net.boreeas.irc.User;
  */
 public class ChannelModeChangeEvent extends Event {
 
-    private static final Set<Character> modesWithParams =
+    public static final Set<Character> modesWithParams =
                                         new HashSet<Character>();
 
     static {

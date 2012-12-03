@@ -97,6 +97,8 @@ public final class IRCBot extends Thread {
             throw new IllegalStateException("Plugin list needs to contain core module");
         }
 
+        logger.debug("Loading plugins: " + pluginNameSet);
+
         pluginManager = new PluginManager(pluginNameSet, this);
         pluginManager.loadAllPlugins();
     }
@@ -119,7 +121,7 @@ public final class IRCBot extends Thread {
                     continue;
                 }
 
-                checkAndFireEvents(readLine().split(" "));
+                checkAndFireEvents(splitArgs(readLine()));
 
             } catch (IOException ex) {
                 logger.fatal("IOException in main loop", ex);
@@ -287,9 +289,9 @@ public final class IRCBot extends Thread {
      * @param rawCommand The command to send
      * <p/>
      * @throws IOException
+     * @deprecated Use send() instead
      */
     public void sendRaw(String rawCommand) throws IOException {
-
         send(rawCommand);
     }
 
@@ -446,7 +448,21 @@ public final class IRCBot extends Thread {
         return line.split(" ");
     }
 
-    private void send(String command) throws IOException {
+    /**
+     * Sends a command to the server without any additional formatting.
+     * Automatically appends carriage return and line feed.
+     * <p/>
+     * @param command The command to send
+     * <p/>
+     * @throws IOException
+     */
+    public void send(String command) throws IOException {
+
+        if (command.startsWith("PONG")) {
+            for (StackTraceElement elem: getStackTrace()) {
+                logger.debug(elem);
+            }
+        }
 
         logger.info("[←] " + command);
 
@@ -456,8 +472,11 @@ public final class IRCBot extends Thread {
 
     private void checkAndFireEvents(String[] parts) {
 
+        logger.debug("Checking " + parts + " for events");
+
         if (parts[0].equals("PING")) {
 
+            logger.debug("Looks like it's a ping event");
             eventPump.onPingReceived(new PingEvent(parts[1]));
         } else if (parts.length >= 2) {
 
@@ -510,13 +529,18 @@ public final class IRCBot extends Thread {
                 eventPump.onUserQuitNetwork(evt);
             } else if (parts[1].equalsIgnoreCase("MODE")) {
 
-                User user = new User(parts[0]);
-                String channel = parts[2];
-                String modes = parts[3];
-                String[] modeArgs = (String[]) ArrayUtils.subarray(parts, 4, parts.length);
+                if (parts[0].contains("!") && parts[0].contains("@")) {
+                    User user = new User(parts[0]);
+                    String channel = parts[2];
+                    String modes = parts[3];
+                    String[] modeArgs = (String[]) ArrayUtils.subarray(parts, 4, parts.length);
 
-                ChannelModeChangeEvent evt = new ChannelModeChangeEvent(user, channel, modes, modeArgs);
-                eventPump.onChannelModeChange(evt);
+                    ChannelModeChangeEvent evt = new ChannelModeChangeEvent(user, channel, modes, modeArgs);
+                    eventPump.onChannelModeChange(evt);
+                } else {
+                    String[] modeArgs = (String[]) ArrayUtils.subarray(parts, 4, parts.length);
+                    eventPump.onSelfModeChange(new SelfModeChangeEvent(parts[3], modeArgs));
+                }
             } else if (parts[1].equals("001")) {
 
                 eventPump.onWelcomeReceived(new WelcomeReceivedEvent());
@@ -673,12 +697,12 @@ public final class IRCBot extends Thread {
         try {
             // If we got no ENDOFNAMES after 2 seconds, assume that we missed it
             socket.setSoTimeout(2000);
-            sendRaw("NAMES " + channel);
+            send("NAMES " + channel);
 
             while (true) {
 
                 String reply = removeLeadingColon(readLine());
-                String[] parts = reply.split(" ");
+                String[] parts = splitArgs(reply);
 
                 if (parts[1].equals("353")) {
                     String replyNormalized = reply.toLowerCase();
@@ -805,7 +829,7 @@ public final class IRCBot extends Thread {
 
     private String getAccountNameWHOX(String nick) throws IOException {
 
-        sendRaw("WHO " + nick + " %a");
+        send("WHO " + nick + " %a");
 
         // Set timeout to 2 seconds, if we didn't get ENDOFWHOX by then,
         // assume we missed it
@@ -814,7 +838,7 @@ public final class IRCBot extends Thread {
             while (true) {
 
                 String reply = removeLeadingColon(readLine());
-                String[] parts = reply.split(" ");
+                String[] parts = splitArgs(reply);
 
                 if (parts[1].equals("354")) {
 
@@ -1037,7 +1061,7 @@ public final class IRCBot extends Thread {
     /**
      * Returns the plugin directory this bot uses.
      * <p/>
-     * @return The directory user
+     * @return The directory
      */
     public String pluginDir() {
         return config.getString(ConfigKey.PLUGIN_DIR.key(),

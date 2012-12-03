@@ -92,10 +92,10 @@ public class Preferences {
                 if (in.equalsIgnoreCase("[global]")) {
 
                     currentState = State.GLOBAL;
-                } else if (in.equalsIgnoreCase("[global-default]")) {
+                } else if (in.equalsIgnoreCase("[global-defaults]")) {
 
                     currentState = State.GLOBAL_DEFAULT;
-                } else if (in.equalsIgnoreCase("[channel-defaul]")) {
+                } else if (in.equalsIgnoreCase("[channel-defaults]")) {
 
                     currentState = State.CHANNEL_DEFAULT;
                 } else if (in.toLowerCase().startsWith("[channel:") && in.endsWith("]")) {

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 import javax.sound.midi.Patch;
 import net.boreeas.irc.IRCBot;
@@ -58,8 +59,6 @@ public class PluginManager {
      */
     public void loadAllPlugins(String pathToPluginFolder) {
 
-        PluginLoader loader = new PluginLoader();
-
         File dir = new File(pathToPluginFolder);
 
         if (dir.isFile()) {
@@ -81,15 +80,11 @@ public class PluginManager {
             }
         });
 
+        logger.debug("The following files passed the filter: " + Arrays.toString(pluginJarNames));
 
         for (String fileName: pluginJarNames) {
             try {
-                Plugin loadedPlugin = loadPlugin(new File(dir, fileName));
-                loadedPlugin.onEnable(loadRequester);
-
-                synchronized (this) {
-                    loadedPlugins.add(loadedPlugin);
-                }
+                loadPlugin(new File(dir, fileName));
             } catch (IOException ex) {
                 logger.error("Unable to load plugin " + fileName, ex);
             } catch (PluginLoadException ex) {

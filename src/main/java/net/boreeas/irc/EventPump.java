@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import net.boreeas.irc.events.*;
 import net.boreeas.irc.plugins.Plugin;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -23,6 +25,8 @@ public class EventPump implements EventListener {
 
     void addEventListener(Plugin plugin, EventListener listener) {
 
+
+        LogFactory.getLog("EventPump").debug("Adding event listeners: " + plugin.getPluginName() + " " + listener);
         eventListeners.add(listener);
 
         Set<EventListener> forPlugin = byPlugin.get(plugin);
