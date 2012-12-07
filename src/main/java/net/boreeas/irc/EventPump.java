@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 import net.boreeas.irc.events.*;
 import net.boreeas.irc.plugins.Plugin;
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
@@ -52,6 +51,7 @@ public class EventPump implements EventListener {
         }
     }
 
+    
     @Override
     public void onSelfJoinChannel(SelfJoinChannelEvent evt) {
         for (EventListener listener: eventListeners) {
@@ -203,6 +203,20 @@ public class EventPump implements EventListener {
     public void onServerNotice(ServerNoticeEvent evt) {
         for (EventListener listener: eventListeners) {
             listener.onServerNotice(evt);
+        }
+    }
+
+    @Override
+    public void onUserChangedNick(UserChangedNickEvent evt) {
+        for (EventListener listener: eventListeners) {
+            listener.onUserChangedNick(evt);
+        }
+    }
+
+    @Override
+    public void onUnknownLine(UnknownLineEvent evt) {
+        for (EventListener listener: eventListeners) {
+            listener.onUnknownLine(evt);
         }
     }
 }

@@ -4,6 +4,7 @@
  */
 package net.boreeas.irc;
 
+import com.sun.org.apache.bcel.internal.classfile.Unknown;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
@@ -17,6 +18,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.FileConfiguration;
 import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -121,7 +123,7 @@ public final class IRCBot extends Thread {
                     continue;
                 }
 
-                checkAndFireEvents(splitArgs(readLine()));
+                EventExtractor.checkAndFireEvents(splitArgs(readLine()), eventPump);
 
             } catch (IOException ex) {
                 logger.fatal("IOException in main loop", ex);
@@ -470,91 +472,6 @@ public final class IRCBot extends Thread {
         writer.flush();
     }
 
-    private void checkAndFireEvents(String[] parts) {
-
-        logger.debug("Checking " + parts + " for events");
-
-        if (parts[0].equals("PING")) {
-
-            logger.debug("Looks like it's a ping event");
-            eventPump.onPingReceived(new PingEvent(parts[1]));
-        } else if (parts.length >= 2) {
-
-            if (parts[1].equalsIgnoreCase("JOIN")) {
-
-                User user = new User(parts[0]);
-                String channel = parts[2];
-
-                eventPump.onUserJoinedChannel(new UserJoinedChannelEvent(user, channel));
-            } else if (parts[1].equalsIgnoreCase("PART")) {
-
-                User user = new User(parts[0]);
-                String channel = parts[2];
-
-                UserLeftChannelEvent evt;
-
-                if (parts.length > 3) {
-                    evt = new UserLeftChannelEvent(user, channel, parts[3]);
-                } else {
-                    evt = new UserLeftChannelEvent(user, channel);
-                }
-
-                eventPump.onUserLeftChannel(evt);
-            } else if (parts[1].equalsIgnoreCase("PRIVMSG")) {
-
-                User user = new User(parts[0]);
-                String target = parts[1];
-                String msg = parts[3];
-
-                MessageReceivedEvent evt = new MessageReceivedEvent(user, target, msg);
-                eventPump.onMessageReceived(evt);
-            } else if (parts[1].equalsIgnoreCase("NOTICE")) {
-
-                if (parts[0].contains("!") && parts[0].contains("@s")) {
-                    User user = new User(parts[0]);
-                    String target = parts[1];
-                    String msg = parts[3];
-
-                    MessageReceivedEvent evt =
-                                         new MessageReceivedEvent(user, target, msg);
-                    eventPump.onNoticeReceived(evt);
-                } else {
-                    eventPump.onServerNotice(new ServerNoticeEvent(parts[0], parts[3]));
-                }
-            } else if (parts[1].equalsIgnoreCase("QUIT")) {
-
-                User user = new User(parts[0]);
-
-                UserQuitNetworkEvent evt = new UserQuitNetworkEvent(user, parts.length > 2 ? parts[2] : "");
-                eventPump.onUserQuitNetwork(evt);
-            } else if (parts[1].equalsIgnoreCase("MODE")) {
-
-                if (parts[0].contains("!") && parts[0].contains("@")) {
-                    User user = new User(parts[0]);
-                    String channel = parts[2];
-                    String modes = parts[3];
-                    String[] modeArgs = (String[]) ArrayUtils.subarray(parts, 4, parts.length);
-
-                    ChannelModeChangeEvent evt = new ChannelModeChangeEvent(user, channel, modes, modeArgs);
-                    eventPump.onChannelModeChange(evt);
-                } else {
-                    String[] modeArgs = (String[]) ArrayUtils.subarray(parts, 4, parts.length);
-                    eventPump.onSelfModeChange(new SelfModeChangeEvent(parts[3], modeArgs));
-                }
-            } else if (parts[1].equals("001")) {
-
-                eventPump.onWelcomeReceived(new WelcomeReceivedEvent());
-            } else if (parts[1].equals("005")) {
-
-                int endIndex = parts.length - ((parts[parts.length - 1].equalsIgnoreCase("are supported by this server")) ? 1 : 0);
-                String[] supports = (String[]) ArrayUtils.subarray(parts, 3, endIndex);
-
-                SupportListReceivedEvent evt = new SupportListReceivedEvent(supports);
-                eventPump.onSupportListReceived(evt);
-            }
-        }
-    }
-
     private String removeLeadingColon(String string) {
         return string.startsWith(":") ? string.substring(1) : string;
     }
@@ -730,7 +647,7 @@ public final class IRCBot extends Thread {
                 } else if (parts[1].equals("366")) {    // End of Names
                     return ChannelAccessLevel.NONE;
                 } else {
-                    checkAndFireEvents(parts);
+                    EventExtractor.checkAndFireEvents(parts, eventPump);
                 }
             }
         } catch (SocketTimeoutException ex) {
@@ -857,7 +774,7 @@ public final class IRCBot extends Thread {
                     break;  // End of WHO list
                 } else {
 
-                    checkAndFireEvents(parts);
+                    EventExtractor.checkAndFireEvents(parts, eventPump);
                 }
             }
         } catch (SocketTimeoutException ex) {

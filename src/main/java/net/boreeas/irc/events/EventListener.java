@@ -24,6 +24,7 @@ public interface EventListener {
     void onMessageReceived(MessageReceivedEvent evt);
     void onNoticeReceived(MessageReceivedEvent evt);
     void onUserQuitNetwork(UserQuitNetworkEvent evt);
+    void onUserChangedNick(UserChangedNickEvent evt);
     void onChannelModeChange(ChannelModeChangeEvent evt);
 
     void onPingReceived(PingEvent evt);
@@ -35,4 +36,6 @@ public interface EventListener {
     void onCommandTriggered(CommandTriggeredEvent evt);
     void onToggleMute(ToggleMuteEvent evt);
     void onAccessLevelChange(AccessLevelChangeEvent evt);
+
+    void onUnknownLine(UnknownLineEvent evt);
 }

@@ -101,4 +101,12 @@ public class DefaultEventListener implements EventListener {
     public void onServerNotice(ServerNoticeEvent evt) {
     }
 
+    @Override
+    public void onUserChangedNick(UserChangedNickEvent evt) {
+    }
+
+    @Override
+    public void onUnknownLine(UnknownLineEvent evt) {
+    }
+
 }
