@@ -4,7 +4,7 @@
  */
 package net.boreeas.irc.plugins;
 
-import net.boreeas.irc.IRCBot;
+import net.boreeas.irc.IrcBot;
 
 /**
  *
@@ -14,9 +14,9 @@ public interface Plugin {
 
     /**
      * Called when the plugin is enabled.
-     * @param bot The IRCBot that loaded the plugin
+     * @param bot The IrcBot that loaded the plugin
      */
-    public void onEnable(IRCBot bot);
+    public void onEnable(IrcBot bot);
 
     /**
      * Called when the plugin is disabled.

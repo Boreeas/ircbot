@@ -33,7 +33,7 @@ public class App {
         for (File botConf: file.listFiles(botConfigFilter)) {
 
             try {
-                IRCBot bot = new IRCBot(new PropertyListConfiguration(botConf.
+                IrcBot bot = new IrcBot(new PropertyListConfiguration(botConf.
                         getName()));
 
                 logger.info("Starting " + bot);

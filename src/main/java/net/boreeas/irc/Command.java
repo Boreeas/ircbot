@@ -14,10 +14,10 @@ import org.apache.commons.logging.LogFactory;
  */
 public abstract class Command {
 
-    protected IRCBot bot;
+    protected IrcBot bot;
     protected final static Log log = LogFactory.getLog("Command");
 
-    public Command(IRCBot bot) {
+    public Command(IrcBot bot) {
         this.bot = bot;
     }
 

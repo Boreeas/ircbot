@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 import javax.sound.midi.Patch;
-import net.boreeas.irc.IRCBot;
+import net.boreeas.irc.IrcBot;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,9 +22,9 @@ public class PluginManager {
     private static final Log logger = LogFactory.getLog("Plugins");
     private final Set<String> files;
     private final ArrayList<Plugin> loadedPlugins = new ArrayList<Plugin>();
-    private final IRCBot loadRequester;
+    private final IrcBot loadRequester;
 
-    public PluginManager(Set<String> configuredFiles, IRCBot loader) {
+    public PluginManager(Set<String> configuredFiles, IrcBot loader) {
         this.loadRequester = loader;
         this.files = configuredFiles;
     }

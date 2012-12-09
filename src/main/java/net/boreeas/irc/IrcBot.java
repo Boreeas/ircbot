@@ -4,7 +4,6 @@
  */
 package net.boreeas.irc;
 
-import com.sun.org.apache.bcel.internal.classfile.Unknown;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
@@ -17,8 +16,6 @@ import net.boreeas.irc.plugins.PluginManager;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.FileConfiguration;
 import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -27,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
  * <p/>
  * @author Boreeas
  */
-public final class IRCBot extends Thread {
+public final class IrcBot extends Thread {
 
     private static final Log logger = LogFactory.getLog("IRC");
 
@@ -51,7 +48,7 @@ public final class IRCBot extends Thread {
     private Preferences preferences;
     private Timer checkConnectionTimer;
 
-    public IRCBot(final FileConfiguration config) {
+    public IrcBot(final FileConfiguration config) {
 
         super(config.getString(ConfigKey.HOST.key())
               + ":" + config.getInt(ConfigKey.PORT.key()));
@@ -689,27 +686,34 @@ public final class IRCBot extends Thread {
 
     private String getAccountNameWHOIS(String nick) throws IOException {
 
-        sendRaw("WHOIS " + nick);
+        send("WHOIS " + nick);
 
-        while (true) {
+        // Set timeout in case we missed ENDOFWHOIS
+        socket.setSoTimeout(2000);
 
-            String reply = readLine();
-            String[] parts = reply.split(" ");
+        try {
+            while (true) {
 
-            if (parts[1].equals("307")) {
-                if (reply.toLowerCase().contains("is a registered nick")) {
-                    return getAccountNameNickserv(nick);
-                } else if (reply.toLowerCase().contains("has identified for "
-                                                        + "this nick")) {
-                    return parts[3].toLowerCase();
+                String reply = readLine();
+                String[] parts = reply.split(" ");
+
+                if (parts[1].equals("307")) {
+                    if (reply.toLowerCase().contains("is a registered nick")) {
+                        return getAccountNameNickserv(nick);
+                    } else if (reply.toLowerCase().contains("has identified for "
+                                                            + "this nick")) {
+                        return parts[3].toLowerCase();
+                    }
+                } else if (parts[1].equals("330")) {
+                    return parts[4].toLowerCase();
+                } else if (parts[1].equals("318")) {
+                    break;  // END of WHOIS
                 }
-            } else if (parts[1].equals("330")) {
-                return parts[4].toLowerCase();
-            } else if (parts[1].equals("318")) {
-                break;  // END of WHOIS
             }
+        } catch (SocketTimeoutException ex) {
+            // ENDOFWHOIS
         }
-
+        
         return "0";
     }
 
@@ -717,28 +721,37 @@ public final class IRCBot extends Thread {
 
         sendMessage("nickserv", "info " + nick);
 
-        while (true) {
+        // Set timeout to 2 seconds, in case we missed end of nickserv information
+        socket.setSoTimeout(2000);
 
-            String reply =
-                   readLine().toLowerCase();
+        try {
+            while (true) {
 
-            if (reply.contains("invalid command")
-                || reply.contains("*** end of info ***")
-                || reply.contains("isn't registered")
-                || reply.contains("is not registered")
-                || reply.contains("for more verbose information")) {
-                break;
-            } else if (reply.contains("information on")) {
-                String[] parts = reply.split(" ");
-                String accName = parts[parts.length - 1];
+                String reply =
+                       readLine().toLowerCase();
 
-                // Hack off ):
-                if (accName.endsWith("):")) {
-                    accName = accName.substring(0, accName.length() - 2);
+                if (reply.contains("invalid command")
+                    || reply.contains("*** end of info ***")
+                    || reply.contains("isn't registered")
+                    || reply.contains("is not registered")
+                    || reply.contains("for more verbose information")) {
+                    break;
+                } else if (reply.contains("information on")) {
+                    String[] parts = reply.split(" ");
+                    String accName = parts[parts.length - 1];
+
+                    // Hack off ):
+                    if (accName.endsWith("):")) {
+                        accName = accName.substring(0, accName.length() - 2);
+                    }
+
+                    return accName;
+                } else {
+                    EventExtractor.checkAndFireEvents(splitArgs(reply), eventPump);
                 }
-
-                return accName;
             }
+        } catch (SocketTimeoutException ex) {
+            // End of nickserv listing
         }
 
         return "0";

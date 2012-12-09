@@ -18,10 +18,10 @@ public class TimeoutCheck extends TimerTask {
     private static final Log logger = LogFactory.getLog("TimeoutCheck");
     public static final long TIMEOUT = 1000 * 60 * 10; // 10 minute timeout
 
-    private final IRCBot bot;
+    private final IrcBot bot;
     private long timeSinceLastServerMessage;
 
-    public TimeoutCheck(IRCBot bot) {
+    public TimeoutCheck(IrcBot bot) {
         this.bot = bot;
     }
 
