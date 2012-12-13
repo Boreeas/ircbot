@@ -6,8 +6,10 @@ package net.boreeas.irc;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -32,6 +34,7 @@ public class Preferences {
         }
     }
 
+    private final Set<String> REGISTERED_PREFS = new HashSet<String>();
     public static final String GLOBAL_WHOX = "whox";
     public static final String GLOBAL_CHANTYPES = "chantypes";
     public static final String CHANNEL_CMD_PREFIX = "cmd-prefix";
@@ -47,6 +50,11 @@ public class Preferences {
     private Map<String, String> channelDefaults;
 
     public Preferences(String file) {
+
+        registerPref(GLOBAL_WHOX);
+        registerPref(GLOBAL_CHANTYPES);
+        registerPref(CHANNEL_CMD_PREFIX);
+        registerPref(CHANNEL_PREFER_MSG);
 
         globalPreferences = new HashMap<String, String>();
         channelPreferences = new HashMap<String, Map<String, String>>();
@@ -66,6 +74,14 @@ public class Preferences {
         } catch (IOException ex) {
             logger.error("Unable to load preference file " + file, ex);
         }
+    }
+
+    public final void registerPref(String pref) {
+        REGISTERED_PREFS.add(pref.toLowerCase());
+    }
+
+    public String[] getRegisteredPrefs() {
+        return REGISTERED_PREFS.toArray(new String[0]);
     }
 
     private void loadFromFile() throws IOException {
@@ -184,6 +200,11 @@ public class Preferences {
     }
 
     public void setString(String key, String value) {
+
+        if (!REGISTERED_PREFS.contains(key.toLowerCase())) {
+            throw new IllegalArgumentException("Unknown preference key " + key);
+        }
+
         globalPreferences.put(key.toLowerCase(), value);
 
         try {
@@ -291,6 +312,10 @@ public class Preferences {
     }
 
     public void setString(String channel, String key, String value) {
+
+        if (!REGISTERED_PREFS.contains(key.toLowerCase())) {
+            throw new IllegalArgumentException("Unknown preference key " + key);
+        }
 
         Map<String, String> chanPref =
                             channelPreferences.get(channel.toLowerCase());
