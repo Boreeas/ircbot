@@ -6,8 +6,6 @@ package net.boreeas.irc;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import junit.framework.TestCase;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.plist.PropertyListConfiguration;
 
 /**
  *
@@ -21,7 +19,6 @@ public class IrcBotTest extends TestCase {
 
     public void testSplitArgs() throws Throwable {
 
-        try {
         Method splitArgs =
                IrcBot.class.getDeclaredMethod("splitArgs", String.class);
         splitArgs.setAccessible(true);
@@ -37,10 +34,5 @@ public class IrcBotTest extends TestCase {
         result = (String[]) splitArgs.invoke(null, "xyz abc :def 124");
         System.out.println("\"xyz abc :def 124\" → " + Arrays.toString(result));
         assertTrue("Last element should be recognized as one", Arrays.equals(result, new String[]{"xyz", "abc", "def 124"}));
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-            throw ex;
-
-        }
     }
 }
