@@ -38,7 +38,7 @@ public class TimeoutCheck extends TimerTask {
             logger.info("No message for several minutes. Sending ping");
 
             try {
-                bot.sendRaw("PING :STILLCONNECTED");
+                bot.send("PING :STILLCONNECTED");
             } catch (IOException ex) {
 
                 logger.fatal("Unable to send ping. Reconnecting");
