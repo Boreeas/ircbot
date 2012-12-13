@@ -429,13 +429,20 @@ public final class IrcBot extends Thread {
         return removeLeadingColon(line);
     }
 
-    private String[] splitArgs(String line) {
+    private static String[] splitArgs(String line) {
 
         // IRC "last argument follows" indicator for args that contain whitespace
         if (line.contains(" :")) {
 
             String[] firstArgsAndLast = line.split(" :");
             String[] args = firstArgsAndLast[0].split(" ");
+
+            if (firstArgsAndLast.length == 1) {
+                // Last arg might be empty, drop it
+                return args;
+            }
+
+            // Resize array to fit in last arg, then copy over
             String[] actual = new String[args.length + 1];
 
             System.arraycopy(args, 0, actual, 0, args.length);
@@ -444,6 +451,7 @@ public final class IrcBot extends Thread {
             return actual;
         }
 
+        // Args are delimited by whitespace
         return line.split(" ");
     }
 
@@ -713,7 +721,7 @@ public final class IrcBot extends Thread {
         } catch (SocketTimeoutException ex) {
             // ENDOFWHOIS
         }
-        
+
         return "0";
     }
 
