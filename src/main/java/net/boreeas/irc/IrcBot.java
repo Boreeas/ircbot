@@ -434,10 +434,10 @@ public final class IrcBot extends Thread {
         // IRC "last argument follows" indicator for args that contain whitespace
         if (line.contains(" :")) {
 
-            String[] firstArgsAndLast = line.split(" :");
+            String[] firstArgsAndLast = line.split(" : *", 2);
             String[] args = firstArgsAndLast[0].split(" ");
 
-            if (firstArgsAndLast.length == 1) {
+            if (firstArgsAndLast.length == 1 || firstArgsAndLast[1].isEmpty()) {
                 // Last arg might be empty, drop it
                 return args;
             }

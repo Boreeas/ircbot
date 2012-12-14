@@ -91,7 +91,7 @@ class EventExtractor {
     private static void extractMessage(String[] parts, EventPump eventPump) {
 
         User user = new User(parts[0]);
-        String target = parts[1];
+        String target = parts[2];
         String msg = parts[3];
 
         MessageReceivedEvent evt = new MessageReceivedEvent(user, target, msg);
@@ -103,7 +103,7 @@ class EventExtractor {
         if (parts[0].contains("!") && parts[0].contains("@s")) {
 
             User user = new User(parts[0]);
-            String target = parts[1];
+            String target = parts[2];
             String msg = parts[3];
 
             MessageReceivedEvent evt =
