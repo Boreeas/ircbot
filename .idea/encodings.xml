@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/App.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/BotAccessLevel.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/CTCP.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/ChannelAccessLevel.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/Command.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/CommandHandler.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/ConfigKey.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/EventExtractor.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/EventPump.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/IrcBot.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/ModeChangeBuilder.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/NoSuchCommandException.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/Preferences.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/TimeoutCheck.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/User.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/AccessLevelChangeEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/ChannelModeChangeEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/CommandTriggeredEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/ConnectedEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/ConnectionInterruptedEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/DefaultEventListener.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/Event.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/EventListener.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/MessageReceivedEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/PingEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/SelfChangeChannelModeEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/SelfDisconnectedEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/SelfJoinChannelEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/SelfLeaveChannelEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/SelfModeChangeEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/SendMessageEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/ServerNoticeEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/SupportListReceivedEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/ToggleMuteEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/UnknownLineEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/UserChangedNickEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/UserJoinedChannelEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/UserLeftChannelEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/UserQuitNetworkEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/events/WelcomeReceivedEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/plugins/InvalidPluginVersionException.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/plugins/Plugin.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/plugins/PluginClassLoader.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/plugins/PluginLoadException.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/plugins/PluginLoader.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/net/boreeas/irc/plugins/PluginManager.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/log4j.properties" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/net/CTCPTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/net/IrcBotTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/net/ModeChangeBuilderTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/net/UserTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/net/boreeas/irc/plugins/PluginManagerTest.java" charset="UTF-8" />
+  </component>
+</project>
+
