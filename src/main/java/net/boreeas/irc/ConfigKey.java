@@ -48,6 +48,14 @@ public enum ConfigKey {
         return defaultValue;
     }
 
+    public String getOrDefault() {
+        if (this.key == null || this.key.isEmpty()) {
+            return defaultValue;
+        } else {
+            return key;
+        }
+    }
+
     public boolean isRequired() {
         return required;
     }
