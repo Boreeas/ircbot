@@ -1,8 +1,0 @@
-[global]
-whox=false
-[global-defaults]
-chantypes=#
-whox=false
-[channel-defaults]
-prefer-msg=false
-cmd-prefix=!
