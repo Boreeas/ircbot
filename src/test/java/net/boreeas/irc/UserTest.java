@@ -54,6 +54,5 @@ public class UserTest extends TestCase {
 
     public void testEquals() {
         assertEquals(user, user2);
-        assertEquals(user2, "nick!user@host");
     }
 }

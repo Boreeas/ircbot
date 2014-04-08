@@ -4,12 +4,11 @@
  */
 package net.boreeas.irc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import junit.framework.TestCase;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import junit.framework.TestCase;
 
 /**
  *
