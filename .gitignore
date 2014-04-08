@@ -7,3 +7,4 @@ dependency-reduced-pom.xml
 ircbot.log
 *.log*
 ircbot.iml
+.idea
