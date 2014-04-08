@@ -1,0 +1,9 @@
+bot*
+nb*
+plugins/*
+target/*
+dependency-reduced-pom.xml
+.out
+ircbot.log
+*.log*
+ircbot.iml
