@@ -466,12 +466,6 @@ public final class IrcBot extends Thread {
      */
     public void send(String command) throws IOException {
 
-        if (command.startsWith("PONG")) {
-            for (StackTraceElement elem: getStackTrace()) {
-                logger.debug(elem);
-            }
-        }
-
         logger.info("[←] " + command);
 
         writer.write(command + "\r\n");

@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,9 @@ public class PluginClassLoader extends URLClassLoader {
     private static final Log logger = LogFactory.getLog("Plugins");
 
     public PluginClassLoader(URL[] urls) {
+
         super(urls);
+        logger.debug("Creating PluginClassLoader for classes " + Arrays.toString(urls));
     }
 
     @Override

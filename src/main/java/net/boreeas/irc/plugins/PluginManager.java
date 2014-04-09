@@ -127,8 +127,7 @@ public class PluginManager {
      * @throws PluginLoadException   If an exception occurs while enabling the
      *                               plugin
      */
-    public Plugin loadPlugin(File pluginFile) throws FileNotFoundException,
-                                                     IOException,
+    public Plugin loadPlugin(File pluginFile) throws IOException,
                                                      PluginLoadException {
 
         logger.info("Loading plugin " + pluginFile);
