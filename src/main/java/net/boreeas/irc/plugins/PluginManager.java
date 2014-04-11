@@ -11,6 +11,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -23,6 +24,7 @@ public class PluginManager {
     private final Set<String> files;
     private final ArrayList<Plugin> loadedPlugins = new ArrayList<Plugin>();
     private final IrcBot loadRequester;
+    private Set<Plugin> scheduledUnload = new HashSet<>();
 
     public PluginManager(Set<String> configuredFiles, IrcBot loader) {
         this.loadRequester = loader;
@@ -155,10 +157,30 @@ public class PluginManager {
         }
 
         synchronized (this) {
-            loadedPlugins.add(loadedPlugin);
+            if (scheduledUnload.contains(loadedPlugin)) {
+                disablePlugin(loadedPlugin);
+                throw new PluginLoadException("Fatal error during load - immediate unload occured");
+            } else {
+                loadedPlugins.add(loadedPlugin);
+            }
         }
 
         return loadedPlugin;
+    }
+
+    /**
+     * In case a fatal error occurred during plugin loading, a plugin
+     * can be scheduled to be immediately unloaded after the loading
+     * process is finished. This will have the same effect as if
+     * @see #disablePlugin(Plugin) was called immediately for this plugin.
+     * <p/>
+     * Note that this is only effective if called during the plugin loading
+     * process. If an error occurs any later, @see #disablePlugin(Plugin) should
+     * be called instead.
+     * @param plugin The plugin that should be unloaded
+     */
+    public void scheduleImmediateUnload(Plugin plugin) {
+        scheduledUnload.add(plugin);
     }
 
     /**
