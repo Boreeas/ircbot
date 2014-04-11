@@ -1,11 +1,10 @@
-bot*
-*plist
+*.plist
 nb*
 plugins/*
 target/*
+logs/*
 dependency-reduced-pom.xml
 .out
-ircbot.log
 *.log*
-ircbot.iml
 .idea
+*.iml
