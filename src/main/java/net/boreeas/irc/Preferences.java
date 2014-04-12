@@ -20,6 +20,7 @@ import java.util.Set;
  */
 public class Preferences {
 
+
     // Used for parsing file
     enum State {
 
@@ -40,6 +41,7 @@ public class Preferences {
     public static final String GLOBAL_CHANTYPES = "chantypes";
     public static final String CHANNEL_CMD_PREFIX = "cmd-prefix";
     public static final String CHANNEL_PREFER_MSG = "prefer-msg";
+    public static final String CHANNEL_PUBLIC_REPLY = "public-reply";
 
     private static final Log logger = LogFactory.getLog("Preferences");
 
@@ -65,7 +67,8 @@ public class Preferences {
         globalDefaults.put(GLOBAL_WHOX, "false");
         globalDefaults.put(GLOBAL_CHANTYPES, "#");
         channelDefaults.put(CHANNEL_CMD_PREFIX, "!");
-        channelDefaults.put(CHANNEL_PREFER_MSG, "false");
+        channelDefaults.put(CHANNEL_PREFER_MSG, "true");
+        channelDefaults.put(CHANNEL_PUBLIC_REPLY, "false");
 
         this.file = file;
         new File(file).getParentFile().mkdirs(); // Assert that file can be created
