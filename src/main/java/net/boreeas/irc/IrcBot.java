@@ -922,7 +922,7 @@ public final class IrcBot extends Thread {
      * @return The target to send the replies to.
      */
     public String getReplyTarget(String messageTarget, String sender) {
-        return isChannel(messageTarget)
+        return isChannel(messageTarget) && preferences.getBoolean(messageTarget, Preferences.CHANNEL_PUBLIC_REPLY)
                ? messageTarget
                : sender;
     }
