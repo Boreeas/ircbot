@@ -87,10 +87,8 @@ public class PluginManager {
         for (String fileName: pluginJarNames) {
             try {
                 loadPlugin(new File(dir, fileName));
-            } catch (IOException ex) {
+            } catch (IOException | PluginLoadException ex) {
                 logger.error("Unable to load plugin " + fileName, ex);
-            } catch (PluginLoadException ex) {
-                throw new RuntimeException(ex);
             }
         }
     }
