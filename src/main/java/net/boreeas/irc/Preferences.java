@@ -35,7 +35,7 @@ public class Preferences {
         }
     }
 
-    private final Set<String> REGISTERED_PREFS = new HashSet<String>();
+    private final Set<String> REGISTERED_PREFS = new HashSet<>();
     public static final String GLOBAL_WHOX = "whox";
     public static final String GLOBAL_CHANTYPES = "chantypes";
     public static final String CHANNEL_CMD_PREFIX = "cmd-prefix";
@@ -57,10 +57,10 @@ public class Preferences {
         registerPref(CHANNEL_CMD_PREFIX);
         registerPref(CHANNEL_PREFER_MSG);
 
-        globalPreferences = new HashMap<String, String>();
-        channelPreferences = new HashMap<String, Map<String, String>>();
-        globalDefaults = new HashMap<String, String>();
-        channelDefaults = new HashMap<String, String>();
+        globalPreferences = new HashMap<>();
+        channelPreferences = new HashMap<>();
+        globalDefaults = new HashMap<>();
+        channelDefaults = new HashMap<>();
 
         globalDefaults.put(GLOBAL_WHOX, "false");
         globalDefaults.put(GLOBAL_CHANTYPES, "#");
@@ -82,7 +82,7 @@ public class Preferences {
     }
 
     public String[] getRegisteredPrefs() {
-        return REGISTERED_PREFS.toArray(new String[0]);
+        return REGISTERED_PREFS.toArray(new String[REGISTERED_PREFS.size()]);
     }
 
     private void loadFromFile() throws IOException {
@@ -94,10 +94,8 @@ public class Preferences {
         }
 
         State currentState = State.GLOBAL;
-        BufferedReader reader =
-                       new BufferedReader(new InputStreamReader(new FileInputStream(target)));
 
-        try {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(target)))) {
             String in;
             while ((in = reader.readLine()) != null) {
                 in = in.trim();
@@ -141,8 +139,6 @@ public class Preferences {
                     }
                 }
             }
-        } finally {
-            reader.close();
         }
     }
 
@@ -322,7 +318,7 @@ public class Preferences {
                             channelPreferences.get(channel.toLowerCase());
 
         if (chanPref == null) {
-            chanPref = new HashMap<String, String>();
+            chanPref = new HashMap<>();
             channelPreferences.put(channel.toLowerCase(), chanPref);
         }
 
