@@ -17,7 +17,7 @@ import java.util.Set;
  *
  * @author Boreeas
  */
-public class EventPump implements EventListener {
+public class EventPump extends EventListener {
 
     private Map<Plugin, Set<EventListener>> byPlugin =
                                             new HashMap<Plugin, Set<EventListener>>();
@@ -36,6 +36,15 @@ public class EventPump implements EventListener {
         }
 
         forPlugin.add(listener);
+    }
+
+    /**
+     * Adds an event listener permanently
+     * @param listener listener
+     */
+    void addPermanentEventListener(EventListener listener) {
+        LogFactory.getLog("EventPump").debug("Adding permanent event listener: " + listener);
+        eventListeners.add(listener);
     }
 
     void removeEventListener(EventListener listener) {

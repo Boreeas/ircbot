@@ -72,6 +72,22 @@ public final class IrcBot extends Thread {
 
         loadAccessLevels();
         loadPlugins();
+
+        // Redirect uses looking for help
+        eventPump.addPermanentEventListener(new EventListener() {
+            @Override
+            public void onMessageReceived(MessageReceivedEvent evt) {
+                String prefix = preferences.getString(evt.target(), Preferences.CHANNEL_CMD_PREFIX);
+                if (evt.message().startsWith(prefix + "help")) {
+                    String msg = "'" + Preferences.CHANNEL_CMD_PREFIX + pluginManager.getPlugin("Core").getCommandPrefix() + " help' for an extensive help";
+                    try {
+                        sendMessage(getReplyTarget(evt.target(), evt.user().nick()), msg);
+                    } catch (IOException e) {
+                        LogFactory.getLog("IrcBot").error("Failed to send help redirect", e);
+                    }
+                }
+            }
+        });
     }
 
 

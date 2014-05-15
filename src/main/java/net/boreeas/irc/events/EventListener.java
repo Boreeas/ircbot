@@ -9,33 +9,33 @@ package net.boreeas.irc.events;
  *
  * @author Boreeas
  */
-public interface EventListener {
+public class EventListener {
 
-    void onSelfJoinChannel(SelfJoinChannelEvent evt);
-    void onSelfLeaveChannel(SelfLeaveChannelEvent evt);
-    void onSendMessage(SendMessageEvent evt);
-    void onSendNotice(SendMessageEvent evt);
-    void onSelfDisconnected(SelfDisconnectedEvent evt);
-    void onSelfModeChange(SelfModeChangeEvent evt);
-    void onSelfChangeChannelMode(SelfChangeChannelModeEvent evt);
+    public void onSelfJoinChannel(SelfJoinChannelEvent evt)  {}
+    public void onSelfLeaveChannel(SelfLeaveChannelEvent evt)  {}
+    public void onSendMessage(SendMessageEvent evt)  {}
+    public void onSendNotice(SendMessageEvent evt)  {}
+    public void onSelfDisconnected(SelfDisconnectedEvent evt)  {}
+    public void onSelfModeChange(SelfModeChangeEvent evt)  {}
+    public void onSelfChangeChannelMode(SelfChangeChannelModeEvent evt)  {}
 
-    void onUserJoinedChannel(UserJoinedChannelEvent evt);
-    void onUserLeftChannel(UserLeftChannelEvent evt);
-    void onMessageReceived(MessageReceivedEvent evt);
-    void onNoticeReceived(MessageReceivedEvent evt);
-    void onUserQuitNetwork(UserQuitNetworkEvent evt);
-    void onUserChangedNick(UserChangedNickEvent evt);
-    void onChannelModeChange(ChannelModeChangeEvent evt);
+    public void onUserJoinedChannel(UserJoinedChannelEvent evt)  {}
+    public void onUserLeftChannel(UserLeftChannelEvent evt)  {}
+    public void onMessageReceived(MessageReceivedEvent evt)  {}
+    public void onNoticeReceived(MessageReceivedEvent evt)  {}
+    public void onUserQuitNetwork(UserQuitNetworkEvent evt)  {}
+    public void onUserChangedNick(UserChangedNickEvent evt)  {}
+    public void onChannelModeChange(ChannelModeChangeEvent evt)  {}
 
-    void onPingReceived(PingEvent evt);
-    void onWelcomeReceived(WelcomeReceivedEvent evt);
-    void onSupportListReceived(SupportListReceivedEvent evt);
-    void onConnected(ConnectedEvent evt);
-    void onConnectionInterrupted(ConnectionInterruptedEvent evt);
-    void onServerNotice(ServerNoticeEvent evt);
-    void onCommandTriggered(CommandTriggeredEvent evt);
-    void onToggleMute(ToggleMuteEvent evt);
-    void onAccessLevelChange(AccessLevelChangeEvent evt);
+    public void onPingReceived(PingEvent evt)  {}
+    public void onWelcomeReceived(WelcomeReceivedEvent evt)  {}
+    public void onSupportListReceived(SupportListReceivedEvent evt)  {}
+    public void onConnected(ConnectedEvent evt)  {}
+    public void onConnectionInterrupted(ConnectionInterruptedEvent evt)  {}
+    public void onServerNotice(ServerNoticeEvent evt)  {}
+    public void onCommandTriggered(CommandTriggeredEvent evt)  {}
+    public void onToggleMute(ToggleMuteEvent evt)  {}
+    public void onAccessLevelChange(AccessLevelChangeEvent evt)  {}
 
-    void onUnknownLine(UnknownLineEvent evt);
+    public void onUnknownLine(UnknownLineEvent evt)  {}
 }
