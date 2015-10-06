@@ -34,7 +34,6 @@ public class Preferences {
         }
     }
 
-    private final Set<String> REGISTERED_PREFS = new HashSet<>();
     public static final String GLOBAL_WHOX = "whox";
     public static final String GLOBAL_CHANTYPES = "chantypes";
     public static final String CHANNEL_CMD_PREFIX = "cmd-prefix";
@@ -78,12 +77,14 @@ public class Preferences {
         }
     }
 
+    @Deprecated
     public final void registerPref(String pref) {
-        REGISTERED_PREFS.add(pref.toLowerCase());
+
     }
 
+    @Deprecated
     public String[] getRegisteredPrefs() {
-        return REGISTERED_PREFS.toArray(new String[REGISTERED_PREFS.size()]);
+        return new String[0];
     }
 
     private void loadFromFile() throws IOException {
@@ -199,10 +200,6 @@ public class Preferences {
 
     public void setString(String key, String value) {
 
-        if (!REGISTERED_PREFS.contains(key.toLowerCase())) {
-            throw new IllegalArgumentException("Unknown preference key " + key);
-        }
-
         globalPreferences.put(key.toLowerCase(), value);
 
         try {
@@ -310,10 +307,6 @@ public class Preferences {
     }
 
     public void setString(String channel, String key, String value) {
-
-        if (!REGISTERED_PREFS.contains(key.toLowerCase())) {
-            throw new IllegalArgumentException("Unknown preference key " + key);
-        }
 
         Map<String, String> chanPref =
                             channelPreferences.get(channel.toLowerCase());
