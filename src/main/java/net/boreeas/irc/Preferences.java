@@ -8,11 +8,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -408,5 +406,25 @@ public class Preferences {
 
     public void setLong(String channel, String key, long value) {
         setString(channel, key, Long.toString(value));
+    }
+
+    public Set<String> getSet(String key) {
+        if (getString(key) == null) return new HashSet<>();
+        return new HashSet<>(Arrays.asList(getString(key).split(",")));
+    }
+
+    public Set<String> getSet(String channel, String key) {
+        if (getString(channel, key) == null) return new HashSet<>();
+        return new HashSet<>(Arrays.asList(getString(channel, key).split(",")));
+    }
+
+    public void setSet(String key, Set<String> value) {
+        String concatted = value.stream().collect(Collectors.joining(","));
+        setString(key, concatted);
+    }
+
+    public void setSet(String channel, String key, Set<String> value) {
+        String concatted = value.stream().collect(Collectors.joining(","));
+        setString(channel, key, concatted);
     }
 }
