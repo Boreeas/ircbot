@@ -67,11 +67,13 @@ public final class IrcBot extends Thread {
         }
 
         this.currentNick = config.getString(ConfigKey.NICK.key());
+
+        loadPlugins();
+
         this.preferences = new Preferences(pluginDataDir() + "/preferences");
         preferences.setBoolean(Preferences.GLOBAL_WHOX, false); // Assume that no whox exists for now
 
         loadAccessLevels();
-        loadPlugins();
 
         // Redirect uses looking for help
         eventPump.addPermanentEventListener(new EventListener() {
