@@ -23,6 +23,7 @@ import java.util.*;
 /**
  * Represents a connection to an IRC server.
  * <p/>
+ *
  * @author Boreeas
  */
 public final class IrcBot extends Thread {
@@ -42,27 +43,28 @@ public final class IrcBot extends Thread {
     private CommandHandler commandHandler = new CommandHandler();
     private PluginManager pluginManager;
     private Map<String, BotAccessLevel> accessLevels =
-                                        new HashMap<String, BotAccessLevel>();
+            new HashMap<String, BotAccessLevel>();
 
     private Set<String> muted = new HashSet<String>();
 
     private Preferences preferences;
     private Timer checkConnectionTimer;
+    private Map<String, Set<String>> usersInChannel = new HashMap<>();
 
     public IrcBot(final FileConfiguration config) {
 
         super(config.getString(ConfigKey.HOST.key())
-              + ":" + config.getInt(ConfigKey.PORT.key()));
+                + ":" + config.getInt(ConfigKey.PORT.key()));
 
         this.config = config;
         config.setAutoSave(true);
         config.setReloadingStrategy(new FileChangedReloadingStrategy());
 
         // Ensure that the config is complete
-        for (ConfigKey key: ConfigKey.values()) {
+        for (ConfigKey key : ConfigKey.values()) {
             if (key.isRequired() && config.getProperty(key.key()) == null) {
                 throw new RuntimeException("Missing config key " + key + " ("
-                                           + key.key() + ")");
+                        + key.key() + ")");
             }
         }
 
@@ -87,9 +89,73 @@ public final class IrcBot extends Thread {
                     }
                 }
             }
+
+            @Override
+            public void onNamesReceived(NamesReceivedEvent evt) {
+                usersInChannel.putIfAbsent(evt.channel.toLowerCase(), new HashSet<>());
+                usersInChannel.get(evt.channel.toLowerCase()).addAll(evt.names);
+            }
+
+            @Override
+            public void onUserJoinedChannel(UserJoinedChannelEvent evt) {
+                usersInChannel.putIfAbsent(evt.getChannel().toLowerCase(), new HashSet<>());
+                usersInChannel.get(evt.getChannel().toLowerCase()).add(evt.getName().nick().toLowerCase());
+            }
+
+            @Override
+            public void onUserLeftChannel(UserLeftChannelEvent evt) {
+                usersInChannel.putIfAbsent(evt.getChannel().toLowerCase(), new HashSet<>());
+                usersInChannel.get(evt.getChannel().toLowerCase()).remove(evt.getUser().nick().toLowerCase());
+            }
+
+            @Override
+            public void onUserChangedNick(UserChangedNickEvent evt) {
+                String oldName = evt.getOldNick().toLowerCase();
+                String newName = evt.getNewNick().toLowerCase();
+                for (Set<String> users: usersInChannel.values()) {
+                    if (users.contains(oldName)) {
+                        users.remove(oldName);
+                        users.add(newName);
+                    }
+                }
+            }
         });
     }
 
+    public Set<String> getUsersInChannel(String channel) {
+        Set<String> result = usersInChannel.getOrDefault(channel.toLowerCase(), new HashSet<>());
+        return Collections.unmodifiableSet(result);
+    }
+
+    public boolean isUserInChannel(String channel, String nick) {
+        return getUsersInChannel(channel).contains(nick.toLowerCase());
+    }
+
+    private static String[] splitArgs(String line) {
+
+        // IRC "last argument follows" indicator for args that contain whitespace
+        if (line.contains(" :")) {
+
+            String[] firstArgsAndLast = line.split(" : *", 2);
+            String[] args = firstArgsAndLast[0].split(" ");
+
+            if (firstArgsAndLast.length == 1 || firstArgsAndLast[1].isEmpty()) {
+                // Last arg might be empty, drop it
+                return args;
+            }
+
+            // Resize array to fit in last arg, then copy over
+            String[] actual = new String[args.length + 1];
+
+            System.arraycopy(args, 0, actual, 0, args.length);
+            actual[actual.length - 1] = firstArgsAndLast[1];
+
+            return actual;
+        }
+
+        // Args are delimited by whitespace
+        return line.split(" ");
+    }
 
     public void loadPlugins() {
 
@@ -101,7 +167,7 @@ public final class IrcBot extends Thread {
         List<Object> pluginNames = config.getList(ConfigKey.PLUGINS.key());
         Set<String> pluginNameSet = new HashSet<String>(pluginNames.size());
 
-        for (Object o: pluginNames) {
+        for (Object o : pluginNames) {
             if (o instanceof String) {
                 pluginNameSet.add((String) o);
             } else {
@@ -119,6 +185,8 @@ public final class IrcBot extends Thread {
         pluginManager.loadAllPlugins();
     }
 
+
+    // --- Connection handling ---
 
     @Override
     public void run() {
@@ -157,17 +225,10 @@ public final class IrcBot extends Thread {
         logger.info("Terminating");
     }
 
-
-
-
-    // --- Connection handling ---
-
-
-
-
     /**
      * Opens the connection to the server and sends the USER/NICK command.
      * <p/>
+     *
      * @throws java.io.IOException
      */
     public void connect() throws IOException {
@@ -175,9 +236,9 @@ public final class IrcBot extends Thread {
         socket = new Socket(server(), port());
 
         reader =
-        new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                new BufferedReader(new InputStreamReader(socket.getInputStream()));
         writer =
-        new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
         int starCount = 0;
 
@@ -211,10 +272,10 @@ public final class IrcBot extends Thread {
         disconnect("");
     }
 
-
     /**
      * Disconnects from the server and closes the sockets.
      * <p/>
+     *
      * @param reason The reason for quitting to give the server
      */
     public void disconnect(String reason) {
@@ -238,6 +299,9 @@ public final class IrcBot extends Thread {
         interrupted = true;
     }
 
+
+    // --- IO/Action interface
+
     public void reconnect() {
 
         pluginManager.saveAllPlugins();
@@ -250,14 +314,9 @@ public final class IrcBot extends Thread {
         }
     }
 
-
-
-
-    // --- IO/Action interface
-
-
     /**
      * Changes the modes of the bot.
+     *
      * @param mcb The builder for the mode change.
      * @throws java.io.IOException
      */
@@ -267,7 +326,7 @@ public final class IrcBot extends Thread {
         eventPump.onSelfModeChange(evt);
 
         if (!evt.isCancelled()) {
-            for (String line: mcb.format()) {
+            for (String line : mcb.format()) {
                 send("MODE " + nick() + " " + line);
             }
         }
@@ -275,9 +334,10 @@ public final class IrcBot extends Thread {
 
     /**
      * Changes the modes of the specified target.
+     *
      * @param target The target of the mode change. If this is the bot itself,
-     * this method will delegate to {@link #changeModes(ModeChangeBuilder mcb)}.
-     * @param mcb The builder for the mode change
+     *               this method will delegate to {@link #changeModes(ModeChangeBuilder mcb)}.
+     * @param mcb    The builder for the mode change
      * @throws java.io.IOException
      */
     public void changeModes(String target, ModeChangeBuilder mcb) throws IOException {
@@ -291,7 +351,7 @@ public final class IrcBot extends Thread {
             eventPump.onSelfChangeChannelMode(evt);
 
             if (!evt.isCancelled()) {
-                for (String line: mcb.format()) {
+                for (String line : mcb.format()) {
                     send("MODE " + target + " " + line);
                 }
             }
@@ -302,8 +362,9 @@ public final class IrcBot extends Thread {
      * Sends a command to the server without any additional formatting.
      * Automatically appends carriage return and line feed.
      * <p/>
+     *
      * @param rawCommand The command to send
-     * <p/>
+     *                   <p/>
      * @throws java.io.IOException
      * @deprecated Use send() instead
      */
@@ -315,8 +376,9 @@ public final class IrcBot extends Thread {
      * Change the bot's nick to
      * <code>newNick</code>.
      * <p/>
+     *
      * @param newNick The new nick of the bot
-     * <p/>
+     *                <p/>
      * @throws java.io.IOException
      */
     public void changeNick(String newNick) throws IOException {
@@ -328,8 +390,9 @@ public final class IrcBot extends Thread {
     /**
      * Join the target channel.
      * <p/>
+     *
      * @param channel The channel to join
-     * <p/>
+     *                <p/>
      * @throws java.io.IOException
      */
     public void joinChannel(String channel) throws IOException {
@@ -347,8 +410,9 @@ public final class IrcBot extends Thread {
     /**
      * Leaves the target channel.
      * <p/>
+     *
      * @param channel The channel to leave
-     * <p/>
+     *                <p/>
      * @throws java.io.IOException
      */
     public void leaveChannel(String channel) throws IOException {
@@ -358,9 +422,10 @@ public final class IrcBot extends Thread {
     /**
      * Leaves the target channel with the specified reason.
      * <p/>
+     *
      * @param channel The channel to leave
      * @param reason  The reason to give for leaving
-     * <p/>
+     *                <p/>
      * @throws java.io.IOException
      */
     public void leaveChannel(String channel,
@@ -379,9 +444,10 @@ public final class IrcBot extends Thread {
     /**
      * Sends a message to the specified user or channel.
      * <p/>
+     *
      * @param target  The target of the message
      * @param message The message to send
-     * <p/>
+     *                <p/>
      * @throws java.io.IOException
      */
     public void sendMessage(String target, String message) throws IOException {
@@ -396,16 +462,17 @@ public final class IrcBot extends Thread {
         if (!evt.isCancelled()) {
             sendPartial("PRIVMSG", target, evt.getMessage());
         } else {
-            logger.info("Send message to target " + target +" cancelled");
+            logger.info("Send message to target " + target + " cancelled");
         }
     }
 
     /**
      * Sends a notice to the specified user or channel.
      * <p/>
+     *
      * @param target  The target of the message
      * @param message The message to send
-     * <p/>
+     *                <p/>
      * @throws java.io.IOException
      */
     public void sendNotice(String target, String message) throws IOException {
@@ -425,7 +492,7 @@ public final class IrcBot extends Thread {
         if (!evt.isCancelled()) {
             sendPartial("NOTICE", target, evt.getMessage());
         } else {
-            logger.info("Send message to target " + target +" cancelled");
+            logger.info("Send message to target " + target + " cancelled");
         }
     }
 
@@ -446,38 +513,13 @@ public final class IrcBot extends Thread {
         return removeLeadingColon(line);
     }
 
-    private static String[] splitArgs(String line) {
-
-        // IRC "last argument follows" indicator for args that contain whitespace
-        if (line.contains(" :")) {
-
-            String[] firstArgsAndLast = line.split(" : *", 2);
-            String[] args = firstArgsAndLast[0].split(" ");
-
-            if (firstArgsAndLast.length == 1 || firstArgsAndLast[1].isEmpty()) {
-                // Last arg might be empty, drop it
-                return args;
-            }
-
-            // Resize array to fit in last arg, then copy over
-            String[] actual = new String[args.length + 1];
-
-            System.arraycopy(args, 0, actual, 0, args.length);
-            actual[actual.length - 1] = firstArgsAndLast[1];
-
-            return actual;
-        }
-
-        // Args are delimited by whitespace
-        return line.split(" ");
-    }
-
     /**
      * Sends a command to the server without any additional formatting.
      * Automatically appends carriage return and line feed.
      * <p/>
+     *
      * @param command The command to send
-     * <p/>
+     *                <p/>
      * @throws java.io.IOException
      */
     public void send(String command) throws IOException {
@@ -493,9 +535,7 @@ public final class IrcBot extends Thread {
     }
 
 
-
     // --- Auth interface ---
-
 
 
     private void loadAccessLevels() {
@@ -511,7 +551,7 @@ public final class IrcBot extends Thread {
     private void addAllAccessLevels(String[] names,
                                     BotAccessLevel level) {
         if (names != null) {
-            for (String name: names) {
+            for (String name : names) {
                 accessLevels.put(name.toLowerCase(), level);
             }
         }
@@ -586,9 +626,10 @@ public final class IrcBot extends Thread {
      * BotAccessLevel.NORMAL</code> if the access level is not specified, or the
      * access level as specified in the config otherwise.
      * <p/>
+     *
      * @param name   The user to check
      * @param isNick Tells whether an account user needs to be retrieved
-     * <p/>
+     *               <p/>
      * @return The access level of the user
      * <p/>
      * @throws java.io.IOException
@@ -597,8 +638,8 @@ public final class IrcBot extends Thread {
             throws IOException {
 
         String accountName = isNick
-                             ? getAccountName(name)
-                             : name;
+                ? getAccountName(name)
+                : name;
 
         if (accountName == null || accountName.equals("0")) {
             // Not logged in
@@ -607,7 +648,7 @@ public final class IrcBot extends Thread {
 
         BotAccessLevel level = accessLevels.get(accountName.toLowerCase());
         logger.debug("Checking access level for account " + accountName + "... "
-                     + level);
+                + level);
 
         if (level == null) {
             return BotAccessLevel.NORMAL;
@@ -619,9 +660,10 @@ public final class IrcBot extends Thread {
     /**
      * Returns the access level of the user in the specified channel.
      * <p/>
+     *
      * @param nick    The user to check
      * @param channel The channel to check
-     * <p/>
+     *                <p/>
      * @return The channel access level
      */
     public ChannelAccessLevel getChanAccess(String nick,
@@ -637,33 +679,36 @@ public final class IrcBot extends Thread {
                 String reply = removeLeadingColon(readLine());
                 String[] parts = splitArgs(reply);
 
-                if (parts[1].equals("353")) {
-                    String replyNormalized = reply.toLowerCase();
-                    String nickNormalized = nick.toLowerCase();
+                switch (parts[1]) {
+                    case "353":
+                        String replyNormalized = reply.toLowerCase();
+                        String nickNormalized = nick.toLowerCase();
 
-                    int indexOfNick = replyNormalized.indexOf(nickNormalized);
+                        int indexOfNick = replyNormalized.indexOf(nickNormalized);
 
-                    if (indexOfNick != -1) {
-                        char modeChar = replyNormalized.charAt(indexOfNick - 1);
+                        if (indexOfNick != -1) {
+                            char modeChar = replyNormalized.charAt(indexOfNick - 1);
 
-                        if (modeChar == '+') {
-                            return ChannelAccessLevel.VOICE;
-                        } else if (modeChar == '@') {
-                            return ChannelAccessLevel.OP;
-                        } else if (modeChar == '%') {
-                            return ChannelAccessLevel.HOP;
-                        } else if (modeChar == '&') {
-                            return ChannelAccessLevel.ADMIN;
-                        } else if (modeChar == '~') {
-                            return ChannelAccessLevel.FOUNDER;
+                            if (modeChar == '+') {
+                                return ChannelAccessLevel.VOICE;
+                            } else if (modeChar == '@') {
+                                return ChannelAccessLevel.OP;
+                            } else if (modeChar == '%') {
+                                return ChannelAccessLevel.HOP;
+                            } else if (modeChar == '&') {
+                                return ChannelAccessLevel.ADMIN;
+                            } else if (modeChar == '~') {
+                                return ChannelAccessLevel.FOUNDER;
+                            }
+
+                            return ChannelAccessLevel.NONE;
                         }
-
+                        break;
+                    case "366":     // End of Names
                         return ChannelAccessLevel.NONE;
-                    }
-                } else if (parts[1].equals("366")) {    // End of Names
-                    return ChannelAccessLevel.NONE;
-                } else {
-                    EventExtractor.checkAndFireEvents(parts, eventPump);
+                    default:
+                        EventExtractor.checkAndFireEvents(parts, eventPump);
+                        break;
                 }
             }
         } catch (SocketTimeoutException ex) {
@@ -688,8 +733,9 @@ public final class IrcBot extends Thread {
      * Returns the nickserv account user of the specified user, or "0" if the
      * user is not logged in.
      * <p/>
+     *
      * @param nick The nick to check
-     * <p/>
+     *             <p/>
      * @return The account user of the user
      * <p/>
      * @throws java.io.IOException
@@ -720,7 +766,7 @@ public final class IrcBot extends Thread {
                     if (reply.toLowerCase().contains("is a registered nick")) {
                         return getAccountNameNickserv(nick);
                     } else if (reply.toLowerCase().contains("has identified for "
-                                                            + "this nick")) {
+                            + "this nick")) {
                         return parts[3].toLowerCase();
                     }
                 } else if (parts[1].equals("330")) {
@@ -747,13 +793,13 @@ public final class IrcBot extends Thread {
             while (true) {
 
                 String reply =
-                       readLine().toLowerCase();
+                        readLine().toLowerCase();
 
                 if (reply.contains("invalid command")
-                    || reply.contains("*** end of info ***")
-                    || reply.contains("isn't registered")
-                    || reply.contains("is not registered")
-                    || reply.contains("for more verbose information")) {
+                        || reply.contains("*** end of info ***")
+                        || reply.contains("isn't registered")
+                        || reply.contains("is not registered")
+                        || reply.contains("for more verbose information")) {
                     break;
                 } else if (reply.contains("information on")) {
                     String[] parts = reply.split(" ");
@@ -802,7 +848,7 @@ public final class IrcBot extends Thread {
                 } else if (parts[1].equals("315") && parts[3].equals(nick)) {
 
                     logger.debug("Received 315 END OF WHO LIST while checking "
-                                 + "account name of " + nick);
+                            + "account name of " + nick);
                     break;  // End of WHO list
                 } else {
 
@@ -817,8 +863,6 @@ public final class IrcBot extends Thread {
 
         return "0"; // WHOX "Not registered" response
     }
-
-
 
 
     // --- Command interface ---
@@ -843,15 +887,13 @@ public final class IrcBot extends Thread {
     }
 
 
-
     // --- Plugin interface ---
-
-
 
 
     /**
      * Returns the command handler used by this bot
      * <p/>
+     *
      * @return The command handler
      */
     public CommandHandler getCommandHandler() {
@@ -861,6 +903,7 @@ public final class IrcBot extends Thread {
     /**
      * Returns the plugin manager used by this bot
      * <p/>
+     *
      * @return The plugin manager
      */
     public PluginManager getPluginManager() {
@@ -869,6 +912,7 @@ public final class IrcBot extends Thread {
 
     /**
      * Returns the directory in which this bots information are saved.
+     *
      * @return the directory
      */
     public String pluginDataDir() {
@@ -919,10 +963,11 @@ public final class IrcBot extends Thread {
      * Determines whether the given string is an IRC channel by checking if the
      * first character is a support channel type by the server.
      * <p/>
+     *
      * @param chan The string to check.
-     * <p/>
+     *             <p/>
      * @return <code>true</code> if the string is a channel, <code>false</code>
-     *         otherwise.
+     * otherwise.
      */
     public boolean isChannel(String chan) {
         return preferences.getString(Preferences.GLOBAL_CHANTYPES).contains(Character.toString(chan.charAt(0)));
@@ -932,20 +977,20 @@ public final class IrcBot extends Thread {
      * Returns the reply target. This is the target of the original message if
      * it is a channel, or else the sender or the message.
      * <p/>
+     *
      * @param messageTarget The target of the message originally received.
      * @param sender        The sender of the message.
-     * <p/>
+     *                      <p/>
      * @return The target to send the replies to.
      */
     public String getReplyTarget(String messageTarget, String sender) {
         return isChannel(messageTarget) && preferences.getBoolean(messageTarget, Preferences.CHANNEL_PUBLIC_REPLY)
-               ? messageTarget
-               : sender;
+                ? messageTarget
+                : sender;
     }
 
 
     // --- Configuration access methods ---
-
 
 
     private void addSingleProperty(String key, Object value) {
@@ -965,6 +1010,7 @@ public final class IrcBot extends Thread {
     /**
      * Returns the server the bot is connected to.
      * <p/>
+     *
      * @return The server
      */
     public String server() {
@@ -974,6 +1020,7 @@ public final class IrcBot extends Thread {
     /**
      * Returns the remote port the bot is connected to.
      * <p/>
+     *
      * @return The remote port
      */
     public int port() {
@@ -983,6 +1030,7 @@ public final class IrcBot extends Thread {
     /**
      * Returns the current nick of the bot
      * <p/>
+     *
      * @return The current nick
      */
     public String nick() {
@@ -992,6 +1040,7 @@ public final class IrcBot extends Thread {
     /**
      * Returns the username of the bot as seen from the IRC server.
      * <p/>
+     *
      * @return The username
      */
     public String username() {
@@ -1001,6 +1050,7 @@ public final class IrcBot extends Thread {
     /**
      * Returns the description of the bot as seen from the IRC server.
      * <p/>
+     *
      * @return The description of the bot
      */
     public String description() {
@@ -1010,17 +1060,19 @@ public final class IrcBot extends Thread {
     /**
      * Returns the plugin directory this bot uses.
      * <p/>
+     *
      * @return The directory
      */
     public String pluginDir() {
         return config.getString(ConfigKey.PLUGIN_DIR.key(),
-                                ConfigKey.PLUGIN_DIR.defaultValue());
+                ConfigKey.PLUGIN_DIR.defaultValue());
     }
 
     /**
      * Returns a copy of the configuration file the bot uses. Changes that
      * modify the copy affect the original configuration, and vice versa.
      * <p/>
+     *
      * @return The configuration file
      */
     public FileConfiguration config() {
@@ -1030,8 +1082,6 @@ public final class IrcBot extends Thread {
     public String commandPrefix(String channel) {
         return preferences.getString(channel, Preferences.CHANNEL_CMD_PREFIX);
     }
-
-
 
 
     @Override

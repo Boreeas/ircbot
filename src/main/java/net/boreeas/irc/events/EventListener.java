@@ -26,6 +26,7 @@ public class EventListener {
     public void onUserQuitNetwork(UserQuitNetworkEvent evt)  {}
     public void onUserChangedNick(UserChangedNickEvent evt)  {}
     public void onChannelModeChange(ChannelModeChangeEvent evt)  {}
+    public void onNamesReceived(NamesReceivedEvent evt) {}
 
     public void onPingReceived(PingEvent evt)  {}
     public void onWelcomeReceived(WelcomeReceivedEvent evt)  {}

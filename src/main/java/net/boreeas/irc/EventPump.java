@@ -31,7 +31,7 @@ public class EventPump extends EventListener {
 
         Set<EventListener> forPlugin = byPlugin.get(plugin);
         if (forPlugin == null) {
-            forPlugin = new HashSet<EventListener>();
+            forPlugin = new HashSet<>();
             byPlugin.put(plugin, forPlugin);
         }
 
@@ -227,6 +227,13 @@ public class EventPump extends EventListener {
     public void onUnknownLine(UnknownLineEvent evt) {
         for (EventListener listener: eventListeners) {
             listener.onUnknownLine(evt);
+        }
+    }
+
+    @Override
+    public void onNamesReceived(NamesReceivedEvent evt) {
+        for (EventListener listener: eventListeners) {
+            listener.onNamesReceived(evt);
         }
     }
 }

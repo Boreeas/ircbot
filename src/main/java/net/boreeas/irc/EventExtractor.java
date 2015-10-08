@@ -7,6 +7,9 @@ package net.boreeas.irc;
 import net.boreeas.irc.events.*;
 import org.apache.commons.lang.ArrayUtils;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Extracts events from a received line and notifies all EventListeners
  * registered to a specific EventPump.
@@ -47,6 +50,9 @@ class EventExtractor {
             } else if (parts[1].equals("005")) {
 
                 extractSupports(parts, eventPump);
+            } else if (parts[1].equals("353")) {
+
+                extractNames(parts, eventPump);
             } else {
                 eventPump.onUnknownLine(new UnknownLineEvent(parts));
             }
@@ -54,6 +60,22 @@ class EventExtractor {
         } else {
             eventPump.onUnknownLine(new UnknownLineEvent(parts));
         }
+    }
+
+    private static void extractNames(String[] parts, EventPump eventPump) {
+        String channel = parts[4];
+        Set<String> names = new HashSet<>();
+        for (String name: parts[5].split(" ")) {
+            char initial = name.charAt(0);
+            if (initial == '+' || initial == '@' || initial == '%' || initial == '&' || initial == '~' || initial == ':') {
+                names.add(name.substring(1).toLowerCase());
+            } else {
+                names.add(name.toLowerCase());
+            }
+        }
+
+        NamesReceivedEvent evt = new NamesReceivedEvent(channel, names);
+        eventPump.onNamesReceived(evt);
     }
 
     private static void extractNickChange(String[] parts, EventPump eventPump) {
