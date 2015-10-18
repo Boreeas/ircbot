@@ -190,21 +190,8 @@ public final class IrcBot extends Thread {
 
     @Override
     public void run() {
-
-
         while (!interrupted) {
-
             try {
-                sleep(50);
-            } catch (InterruptedException ex) {
-                disconnect("Thread interrupted");
-            }
-
-            try {
-                if (socket.getInputStream().available() == 0) {
-                    continue;
-                }
-
                 EventExtractor.checkAndFireEvents(splitArgs(readLine()), eventPump);
 
             } catch (IOException ex) {
