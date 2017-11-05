@@ -8,9 +8,6 @@
     <artifactId>irc</artifactId>
     <packaging>pom</packaging>
     <version>1.0.6</version>
-    <modules>
-        <module>../irc-hugbot</module>
-    </modules>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
