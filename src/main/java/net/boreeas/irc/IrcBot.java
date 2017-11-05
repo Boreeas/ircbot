@@ -198,6 +198,7 @@ public final class IrcBot extends Thread {
                 logger.fatal("IOException in main loop", ex);
                 disconnect("IOException: " + ex);
                 eventPump.onConnectionInterrupted(new ConnectionInterruptedEvent(ex));
+                reconnect();
             } catch (RuntimeException ex) {
                 disconnect("Unknown error: " + ex);
                 eventPump.onConnectionInterrupted(new ConnectionInterruptedEvent(ex));
@@ -482,6 +483,12 @@ public final class IrcBot extends Thread {
             logger.info("Send message to target " + target + " cancelled");
         }
     }
+
+    public void sendAction(String target, String action) throws IOException {
+        String msg = CTCP.Request.ACTION.format(action);
+        sendMessage(target, msg);
+    }
+
 
     private void sendPartial(String type, String target, String message) throws IOException {
 

@@ -6,7 +6,11 @@
 
     <groupId>net.boreeas</groupId>
     <artifactId>irc</artifactId>
-    <version>1.0.5</version>
+    <packaging>pom</packaging>
+    <version>1.0.6</version>
+    <modules>
+        <module>../irc-hugbot</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

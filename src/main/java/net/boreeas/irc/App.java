@@ -23,18 +23,25 @@ public class App {
     public static void main(String[] args) {
 
         File file = new File(System.getProperty("user.dir"));
-        FilenameFilter botConfigFilter = new FilenameFilter() {
+        FilenameFilter botConfigFilter = (dir, name) -> name.startsWith("bot_") && name.endsWith(".plist");
 
-            public boolean accept(File dir, String name) {
+        File[] files = file.listFiles(botConfigFilter);
+        if (files == null) {
+            logger.error("Working dir is not a valid directory");
+            System.exit(1);
+        }
 
-                return name.startsWith("bot_") && name.endsWith(".plist");
-            }
-        };
+        if (files.length == 0) {
+            logger.error("No configurations found");
+            System.exit(1);
+        }
 
-        boolean configFound = false;
-        for (File botConf: file.listFiles(botConfigFilter)) {
-            configFound = true;
+        logger.info("Found " + files.length + "  configs:");
+        for (File f: files) {
+            logger.info("  " + f.getName());
+        }
 
+        for (File botConf: files) {
             try {
                 IrcBot bot = new IrcBot(new PropertyListConfiguration(botConf.
                         getName()));
@@ -49,10 +56,6 @@ public class App {
                 logger.fatal("Unable to start bot for config file " + botConf,
                              ex);
             }
-        }
-
-        if (!configFound) {
-            logger.warn("No configuration file found, no bot was started");
         }
     }
 }
